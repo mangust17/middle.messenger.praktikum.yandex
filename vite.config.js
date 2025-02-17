@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import crypto from 'node:crypto';
+import crypto from 'crypto';
 
 global.crypto = crypto;
 
