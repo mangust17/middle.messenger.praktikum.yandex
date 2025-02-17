@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
-import { webcrypto } from 'node:crypto';
+import crypto from 'node:crypto';
+
+global.crypto = crypto;
 
 export default defineConfig({
   root:'.',
@@ -11,5 +13,3 @@ export default defineConfig({
   },
   assetsInclude: ["**/*.hbs"],
 });
-
-globalThis.crypto = webcrypto;
