@@ -9,7 +9,7 @@ export function renderChat() {
   const chatsData = [
     { 
       avatar: "/avatars/avatar1.jpg", name: "Андрей", lastMessage: "Привет!", unreadCount: 2, 
-      status: "В сети", messages: [{ text: "Привет!", isMine: false }]
+      status: "В сети ", messages: [{ text: "Привет!", isMine: false }]
     },
     { 
       avatar: "/avatars/avatar2.jpg", name: "Киноклуб", lastMessage: "Какой...", unreadCount: 1, 
