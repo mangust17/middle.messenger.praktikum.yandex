@@ -1,4 +1,11 @@
-export function ChatItem(chat, onSelect) {
+interface Chat {
+  avatar: string;
+  name: string;
+  lastMessage?: string;
+  unreadCount: number;
+}
+
+export function ChatItem(chat: Chat, onSelect: (chat: Chat) => void): HTMLLIElement {
   const chatItem = document.createElement("li");
   chatItem.className = "chat-item";
   
@@ -11,7 +18,6 @@ export function ChatItem(chat, onSelect) {
           <span class="chat-time">12:45</span>
           <p class="chat-item-message">${chat.lastMessage || "Нет сообщений"}</p>
         </div>
-        
       </div>
       ${chat.unreadCount > 0 ? `<span class="chat-unread">${chat.unreadCount}</span>` : ""}
     </a>
@@ -20,4 +26,4 @@ export function ChatItem(chat, onSelect) {
   chatItem.addEventListener("click", () => onSelect(chat));
 
   return chatItem;
-}
+} 

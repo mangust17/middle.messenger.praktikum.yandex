@@ -1,4 +1,14 @@
-export function ChatWindow(chat) {
+interface Message {
+  text: string;
+  isMine: boolean;
+}
+
+interface Chat {
+  avatar: string;
+  messages: Message[];
+}
+
+export function ChatWindow(chat?: Chat): HTMLDivElement {
   const container = document.createElement("div");
   container.className = "chat-window";
 
@@ -55,4 +65,4 @@ export function ChatWindow(chat) {
   container.appendChild(messagesContainer);
   container.appendChild(messageInput);
   return container;
-}
+} 

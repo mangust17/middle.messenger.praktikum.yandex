@@ -1,4 +1,10 @@
-export function ChatHeader(chat) {
+interface Chat {
+  avatar: string;
+  name: string;
+  status?: string;
+}
+
+export function ChatHeader(chat?: Chat): HTMLDivElement {
   if (!chat) {
     return document.createElement("div");
   }
@@ -15,4 +21,4 @@ export function ChatHeader(chat) {
   `;
 
   return header;
-}
+} 

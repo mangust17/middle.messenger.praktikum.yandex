@@ -1,4 +1,4 @@
-export function createButton(id, text, onClick) {
+export function createButton(id: string, text: string, onClick?: () => void): HTMLButtonElement {
   const button = document.createElement("button");
   button.id = id;
   button.type = "button";
@@ -6,9 +6,8 @@ export function createButton(id, text, onClick) {
 
   if (typeof onClick === "function") {
     button.addEventListener("click", onClick);
-    console.log(1233)
+    console.log(1233);
   }
 
   return button;
-}
-
+} 
