@@ -85,7 +85,8 @@ export function renderChat(): void {
   function renderSelectedChat(chat: Chat): void {
     chatContent.innerHTML = ""; 
     chatContent.appendChild(createChatHeader(chat));
-    chatContent.appendChild(ChatWindow(chat));
+    const chatWindow = new ChatWindow({ chat });
+    chatContent.appendChild(chatWindow.element);
   }
 
   const profileLink = document.createElement("a");
