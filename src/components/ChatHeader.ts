@@ -1,24 +1,28 @@
-interface Chat {
+import { Block } from "../core/Block";
+
+interface ChatHeaderProps {
   avatar: string;
   name: string;
   status?: string;
+  [key: string]: any;
 }
 
-export function ChatHeader(chat?: Chat): HTMLDivElement {
-  if (!chat) {
-    return document.createElement("div");
+export class ChatHeader extends Block<ChatHeaderProps> {
+  constructor(props: ChatHeaderProps) {
+    super("div", props);
   }
 
-  const header = document.createElement("div");
-  header.className = "chat-header";
+  protected render(): string {
+    const { avatar, name, status = "Оффлайн" } = this.props;
 
-  header.innerHTML = `
-    <img src="${chat.avatar}" alt="Avatar" class="header-avatar">
-    <div>
-      <span class="header-name">${chat.name}</span>
-      <span class="header-status">${chat.status || "Оффлайн"}</span>
-    </div>
-  `;
-
-  return header;
-} 
+    return `
+      <div class="chat-header">
+        <img src="${avatar}" alt="Avatar" class="header-avatar">
+        <div>
+          <span class="header-name">${name}</span>
+          <span class="header-status">${status}</span>
+        </div>
+      </div>
+    `;
+  }
+}

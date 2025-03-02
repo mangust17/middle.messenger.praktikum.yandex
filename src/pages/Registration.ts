@@ -1,6 +1,6 @@
 import Handlebars from "handlebars";
 import regTemplate from "../templates/registration.hbs?raw"; 
-import { createButton } from "../components/button";
+import { Button } from  "../components/button";
 import { renderLogin } from "./Login";
 import { renderChat } from "./Chats";
 
@@ -8,15 +8,20 @@ export function renderRegistration(): void {
   const reg = document.createElement("div");
   reg.classList.add("login-container");
 
-  reg.innerHTML = Handlebars.compile(regTemplate)();
+  reg.innerHTML = Handlebars.compile(regTemplate)({});
 
-  const button = createButton("sign-up", "Зарегистрироваться", () => renderChat());
-  
+  const button = new Button({
+    id: "sign-up",
+    text: "Зарегистрироваться",
+    onClick: () => {
+      renderChat();
+    },
+  });
   const footer = reg.querySelector(".login-footer");
   if (!footer) {
     throw new Error("Registration footer not found");
   }
-  footer.prepend(button);
+  footer.prepend(button.element);
 
   const app = document.getElementById("app");
   if (!app) {

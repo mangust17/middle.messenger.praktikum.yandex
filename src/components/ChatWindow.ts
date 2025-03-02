@@ -53,7 +53,7 @@ export function ChatWindow(chat?: Chat): HTMLDivElement {
   messageInput.className = "message-input-container";
   messageInput.innerHTML = `
     <form id="message-form" class="message-form">
-      <input id="message-input" type="text" class="message-input" placeholder="Написать сообщение..." autocomplete="off">
+      <input id="message-input" name = "message" type="text" class="message-input" placeholder="Написать сообщение..." autocomplete="off">
       <button class="send-button" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
           <path d="M15.854 1.146a.5.5 0 0 1 .11.54l-5 14a.5.5 0 0 1-.94-.184L8.49 10.5 2.982 8.332a.5.5 0 0 1-.058-.927l13-6a.5.5 0 0 1 .93.36l-.001.001zM6.011 8 9 9.5l1.28 4.267L13.885 3.114 6.011 8z"/>

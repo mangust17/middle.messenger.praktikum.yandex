@@ -1,6 +1,6 @@
 import Handlebars from "handlebars";
 import loginTemplate from "../templates/login.hbs?raw"; 
-import { createButton } from "../components/button";
+import { Button } from  "../components/button";
 import { renderRegistration } from "./Registration";
 import { renderChat } from "./Chats";
 import { render404Page, render500Page } from "./Errors";
@@ -18,15 +18,20 @@ export function renderLogin(): void {
     throw new Error("Login container not found");
   }
 
-  const button = createButton("sign-in", "Войти", () => {
-    renderChat();
+  const button = new Button({
+    id: "sign-in",
+    text: "Войти",
+    onClick: () => {
+      console.log(1);
+      renderChat();
+    },
   });
 
   const footer = loginContainer.querySelector(".login-footer");
   if (!footer) {
     throw new Error("Login footer not found");
   }
-  footer.prepend(button);
+  footer.prepend(button.element);
 
   const registerLink = loginContainer.querySelector("#register-link");
   if (!registerLink) {

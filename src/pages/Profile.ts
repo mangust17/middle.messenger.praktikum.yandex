@@ -1,6 +1,6 @@
 import Handlebars from "handlebars";
 import profileTemplate from "../templates/profile.hbs?raw"; 
-import { createButton } from "../components/button";
+import { Button } from  "../components/button";
 import { renderChat } from "./Chats";
 
 interface User {
@@ -34,14 +34,24 @@ export function renderProfile(user: User): void {
   if (!buttonsContainer) {
     throw new Error("Buttons container not found");
   }
-
-  const editButton = createButton("edit-data", "Изменить данные", () => {
-    console.log("Изменение данных...");
+  
+  const editButton = new Button({
+    id: "edit-data",
+    text: "Изменить данные",
+    onClick: () => {
+      console.log("Изменение данных...");
+    },
   });
-  editButton.disabled = true;
 
-  const changePasswordButton = createButton("change-password", "Изменить пароль", () => {
-    const inputsContainer = document.querySelector(".profile-form-inputs");
+  editButton.setProps({
+    disabled: true,
+  });
+
+  const changePasswordButton = new Button({
+    id: "change-password",
+    text: "Изменить пароль",
+    onClick: () => {
+      const inputsContainer = document.querySelector(".profile-form-inputs");
     if (!inputsContainer) {
       throw new Error("Inputs container not found");
     }
@@ -58,16 +68,23 @@ export function renderProfile(user: User): void {
 
     inputsContainer.appendChild(oldPassword);
     inputsContainer.appendChild(newPassword);
-    changePasswordButton.disabled = true;
+    changePasswordButton.setProps({
+      disabled: true,
+    });
+    },
   });
 
-  const logoutButton = createButton("logout", "Выйти из аккаунта", () => {
-    console.log("Выход из аккаунта...");
+  const logoutButton = new Button({
+    id: "logout",
+    text: "Выйти из аккаунта",
+    onClick: () => {
+      console.log("Выход из аккаунта...");
+    },
   });
 
-  buttonsContainer.appendChild(editButton);
-  buttonsContainer.appendChild(changePasswordButton);
-  buttonsContainer.appendChild(logoutButton);
+  buttonsContainer.appendChild(editButton.element);
+  buttonsContainer.appendChild(changePasswordButton.element);
+  buttonsContainer.appendChild(logoutButton.element);
 
   const formInputs = document.querySelectorAll<HTMLInputElement>(".profile-form input");
   const initialValues: InitialValues = {};
@@ -80,7 +97,9 @@ export function renderProfile(user: User): void {
         const element = document.getElementById(key) as HTMLInputElement;
         return element && element.value !== initialValues[key];
       });
-      editButton.disabled = !isFormChanged;
+      editButton.setProps({
+        disabled: !isFormChanged,
+      });
     });
   });
 } 

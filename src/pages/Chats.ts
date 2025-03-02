@@ -1,14 +1,14 @@
 import { ChatList } from "../components/ChatList";
-import { ChatHeader } from "../components/ChatHeader";
+import { createChatHeader } from "../components/createChatHeader";
 import { ChatWindow } from "../components/ChatWindow";
 import { renderProfile } from "./Profile";
 
-interface Message {
+export interface Message {
   text: string;
   isMine: boolean;
 }
 
-interface Chat {
+export interface Chat {
   avatar: string;
   name: string;
   lastMessage: string;
@@ -84,7 +84,7 @@ export function renderChat(): void {
 
   function renderSelectedChat(chat: Chat): void {
     chatContent.innerHTML = ""; 
-    chatContent.appendChild(ChatHeader(chat));
+    chatContent.appendChild(createChatHeader(chat));
     chatContent.appendChild(ChatWindow(chat));
   }
 
