@@ -23,7 +23,7 @@
     "@typescript-eslint/parser": "^8.28.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.23.0",
-    "eslint-config-prettier": "^10.1.1",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-prettier": "^5.2.5",
     "globals": "^16.0.0",
@@ -32,7 +32,7 @@
     "lint-staged": "^15.5.0",
     "postcss": "^8.5.2",
     "prettier": "^3.5.3",
-    "stylelint": "^16.17.0",
+    "stylelint": "^15.7.0",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-order": "^6.0.4",
@@ -54,7 +54,11 @@
     "node": ">=16.0.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint --fix"],
-    "*.{css,scss}": ["stylelint --fix"]
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix"
+    ]
   }
 }
