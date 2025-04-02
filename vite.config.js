@@ -1,13 +1,17 @@
-import { defineConfig } from "vite";
-
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root:'.',
+  root: '.',
   server: {
-    port: 3000, 
+    port: 3000,
   },
   preview: {
-    port: 3000, 
+    port: 3000,
   },
   assetsInclude: ["**/*.hbs"],
+  build: {
+    rollupOptions: {
+      input: 'index.ts'
+    }
+  }
 });
