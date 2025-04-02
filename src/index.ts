@@ -5,9 +5,7 @@ import Handlebars from 'handlebars';
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
 Handlebars.registerHelper('neq', (a, b) => a !== b);
-Handlebars.registerHelper('range', (start, end) =>
-  Array.from({ length: end - start }, (_, i) => start + i),
-);
+Handlebars.registerHelper('range', (start, end) => Array.from({ length: end - start }, (_, i) => start + i));
 Handlebars.registerHelper('lookup', (obj, field) => obj[field]);
 
 // Регистрация маршрутов

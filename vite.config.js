@@ -8,10 +8,10 @@ export default defineConfig({
   preview: {
     port: 3000,
   },
-  assetsInclude: ["**/*.hbs"],
+  assetsInclude: ['**/*.hbs'],
   build: {
     rollupOptions: {
-      input: 'index.ts'
-    }
-  }
+      input: 'index.ts',
+    },
+  },
 });

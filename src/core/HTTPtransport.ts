@@ -41,51 +41,28 @@ export class HTTPTransport {
   }
 
   public get(url: string, options: HTTPOptions = {}): Promise<XMLHttpRequest> {
-    return this.request(
-      `${this.apiUrl}${url}`,
-      { ...options, method: METHODS.GET },
-      options.timeout,
-    );
+    return this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.GET }, options.timeout);
   }
 
   public post(url: string, options: HTTPOptions = {}): Promise<XMLHttpRequest> {
-    return this.request(
-      `${this.apiUrl}${url}`,
-      { ...options, method: METHODS.POST },
-      options.timeout,
-    );
+    return this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.POST }, options.timeout);
   }
 
   public put(url: string, options: HTTPOptions = {}): Promise<XMLHttpRequest> {
-    return this.request(
-      `${this.apiUrl}${url}`,
-      { ...options, method: METHODS.PUT },
-      options.timeout,
-    );
+    return this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.PUT }, options.timeout);
   }
 
   public delete(url: string, options: HTTPOptions = {}): Promise<XMLHttpRequest> {
-    return this.request(
-      `${this.apiUrl}${url}`,
-      { ...options, method: METHODS.DELETE },
-      options.timeout,
-    );
+    return this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.DELETE }, options.timeout);
   }
 
-  private request(
-    url: string,
-    options: HTTPOptions & { method: HTTPMethod },
-    timeout = 5000,
-  ): Promise<XMLHttpRequest> {
+  private request(url: string, options: HTTPOptions & { method: HTTPMethod }, timeout = 5000): Promise<XMLHttpRequest> {
     const { method, data, headers = {} } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
-      const urlWithQuery =
-        isGet && data && !(data instanceof FormData)
-          ? `${url}?${queryStringify(data as Record<string, unknown>)}`
-          : url;
+      const urlWithQuery = isGet && data && !(data instanceof FormData) ? `${url}?${queryStringify(data as Record<string, unknown>)}` : url;
 
       xhr.open(method, urlWithQuery);
       xhr.timeout = timeout;
