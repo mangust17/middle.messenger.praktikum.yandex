@@ -12,6 +12,7 @@
     "noEmit": true,
     "strict": true,
     "noImplicitAny": true,
+    "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -19,3 +20,4 @@
   },
   "include": ["src/**/*", "main.ts", "utils/validation.ts"]
 }
+
