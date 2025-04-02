@@ -16,6 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
     "typeRoots": ["./src/types"]
   },
   "include": ["src/**/*", "main.ts", "utils/validation.ts"]
