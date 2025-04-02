@@ -1,0 +1,39 @@
+<main class="profile-container">
+  <div class="sidebar">
+    <button id="back-button" class="back-button">&larr; Назад</button>
+  </div>
+
+  <div class="profile-content">
+    <form class="profile-form">
+      <img src="{{avatar}}" alt="Avatar" class="profile-avatar">
+      <input type="file" id="avatar" accept="image/*">
+
+      <h2>{{display_name}}</h2>
+
+      <div class="profile-form-inputs">
+        <label for="login">Логин</label>
+        <input type="text" id="login" value="{{login}}" required>
+
+        <label for="email">Электронная почта</label>
+        <input type="email" id="email" name="email" value="{{email}}" required>
+
+        <label for="first-name">Имя</label>
+        <input type="text" id="first-name" name="first_name" value="{{firstName}}" required>
+
+        <label for="last-name">Фамилия</label>
+        <input type="text" id="last-name" name="second_name" value="{{lastName}}" required>
+
+        <label for="chat-name">Имя в чате</label>
+        <input type="text" id="chat-name" value="{{chatName}}" required>
+
+        <label for="display_name">Отображаемое имя</label>
+        <input type="text" id="display_name" value="{{display_name}}" name="display_name" required>
+
+        <label for="phone">Телефон</label>
+        <input type="tel" id="phone" value="{{phone}}" name="phone" required>
+      </div>
+
+      <div class="login-footer" id="buttons-container"></div>
+    </form>
+  </div>
+</main>
