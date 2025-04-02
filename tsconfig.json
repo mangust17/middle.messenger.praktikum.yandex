@@ -21,4 +21,3 @@
   },
   "include": ["src/**/*", "main.ts", "utils/validation.ts"]
 }
-
