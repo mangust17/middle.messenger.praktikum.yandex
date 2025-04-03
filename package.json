@@ -1,40 +1,39 @@
 {
   "name": "messanger",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "prepare": "husky install",
-    "preview": "vite preview",
     "start": "vite build && vite preview --port 3000",
-    "lint": "eslint .",
-    "type-check": "tsc --noEmit",
-    "check": "npm run lint && npm run type-check",
-    "lint:styles": "stylelint 'src/**/*.{css,scss,less}' --fix",
-    "lint-staged": "lint-staged",
+    "preview": "vite preview",
+    "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
+    "lint:styles": "stylelint 'src/**/*.{pcss,css,scss}' --fix",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path ./.prettierignore"
   },
+  "engines": {
+    "node": ">=19"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-import-resolver-typescript": "^3.7.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.3",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-import-resolver-alias": "^1.1.2",
+		"eslint-import-resolver-typescript": "^3.7.0",
+		"eslint-plugin-eslint-comments": "^3.2.0",
+		"eslint-plugin-import": "^2.31.0",
+		"eslint-plugin-prettier": "^4.2.1",
     "postcss": "^8.5.1",
     "postcss-cli": "^11.0.0",
-    "prettier": "^2.8.8",
-    "stylelint": "^14.16.1",
-    "stylelint-config-prettier": "^9.0.5",
-    "stylelint-config-standard": "^29.0.0",
-    "stylelint-order": "^6.0.3",
+		"prettier": "^2.8.8",
+		"stylelint": "^15.7.0",
+		"stylelint-config-standard": "^33.0.0",
+		"stylelint-order": "^6.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.1",
@@ -43,21 +42,10 @@
     "vite-plugin-raw": "^1.0.3"
   },
   "dependencies": {
-    "@types/jest": "^29.5.12",
-    "handlebars": "^4.7.8",
+    "autoprefixer": "^10.4.20",
+    "express": "^4.21.2",
     "nanoid": "^5.0.4",
-    "node-fetch": "^3.3.2",
-    "autoprefixer": "^10.4.17"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix"
-    ],
-    "*.{css,scss}": [
-      "stylelint --fix"
-    ]
+    "handlebars": "^4.7.8",
+    "postcss-preset-env": "^9.6.0"
   }
 }

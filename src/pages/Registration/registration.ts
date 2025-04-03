@@ -10,12 +10,11 @@ export default class RegistrationPage extends Block {
       events: {
         'blur input': (e: FocusEvent) => {
           const input = e.target as HTMLInputElement;
-          /* eslint-disable */
-          const error = validateField(input.value, input.name as any);
+          const error = validateField(input.value, input.name as keyof typeof VALIDATION_RULES);
           if (error) {
-            const errorSpan = input.nextElementSibling as HTMLElement;
-            errorSpan.textContent = error;
-            errorSpan.style.display = 'block';
+            this.showError(input, error);
+          } else {
+            this.hideError(input);
           }
         },
         'submit form': (e: SubmitEvent) => {
@@ -25,11 +24,9 @@ export default class RegistrationPage extends Block {
           let isValid = true;
 
           inputs.forEach(input => {
-            const error = validateField(input.value, input.name as any);
+            const error = validateField(input.value, input.name as keyof typeof VALIDATION_RULES);
             if (error) {
-              const errorSpan = input.nextElementSibling as HTMLElement;
-              errorSpan.textContent = error;
-              errorSpan.style.display = 'block';
+              this.showError(input, error);
               isValid = false;
             }
           });
@@ -52,6 +49,15 @@ export default class RegistrationPage extends Block {
 
     errorSpan.textContent = errorMessage;
     errorSpan.style.display = 'block';
+    input.classList.add('error');
+  }
+
+  private hideError(input: HTMLInputElement): void {
+    const errorSpan = input.nextElementSibling as HTMLElement;
+    if (errorSpan && errorSpan.classList.contains('error-message')) {
+      errorSpan.style.display = 'none';
+    }
+    input.classList.remove('error');
   }
 
   private validateForm(): boolean {
