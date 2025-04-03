@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "vite build && vite preview --port 3000",
+    "start": "tsc --noEmit && vite build && node server.cjs",
     "preview": "vite preview",
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "lint:styles": "stylelint 'src/**/*.{pcss,css,scss}' --fix",
