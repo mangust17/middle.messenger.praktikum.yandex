@@ -8,9 +8,6 @@ Handlebars.registerHelper('neq', (a, b) => a !== b);
 Handlebars.registerHelper('range', (start, end) => Array.from({ length: end - start }, (_, i) => start + i));
 Handlebars.registerHelper('lookup', (obj, field) => obj[field]);
 
-// Делаем роутер доступным глобально
-(window as any).router = router;
-
 // Регистрация маршрутов
 router
   .use('/', Pages.LoginPage as unknown as typeof Block)
