@@ -1,3 +1,5 @@
+global.structuredClone = global.structuredClone || (obj => JSON.parse(JSON.stringify(obj)));
+
 module.exports = {
   root: true,
   env: {
