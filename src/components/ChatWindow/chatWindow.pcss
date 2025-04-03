@@ -1,0 +1,132 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.messages-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 70%;
+}
+
+.message-wrapper.justify-start {
+  align-self: flex-start;
+}
+
+.message-wrapper.justify-end {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-bubble {
+  position: relative;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+  border-radius: 12px;
+}
+
+.message-wrapper.justify-end .message-bubble {
+  background-color: #e3f2fd;
+}
+
+.message-text {
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+.message-time {
+  color: #666666;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.message-input-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-top: 1px solid #eeeeee;
+}
+
+.message-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.message-input {
+  flex: 1;
+  padding: 12px 20px;
+  font-size: 14px;
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.message-input:focus {
+  border-color: #1e88e5;
+}
+
+.send-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  color: white;
+  background: #1e88e5;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.send-button:hover {
+  background-color: #1565c0;
+}
+
+.send-button svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.no-messages {
+  margin-top: 20px;
+  color: #666666;
+  text-align: center;
+}
+
+.no-chat-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  color: #999999;
+  font-size: 16px;
+  text-align: center;
+}
+
+.no-chat-selected p {
+  margin: 0;
+}

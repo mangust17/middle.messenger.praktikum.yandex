@@ -1,0 +1,19 @@
+<li class="chat-item">
+  <div class="chat-link">
+    <img src="{{avatar}}" alt="Avatar" class="chat-avatar">
+    <div class="chat-info">
+        <span class="chat-name">{{name}}</span>
+        <span class="chat-time">12:45</span>
+      <p class="chat-item-message">
+        {{#if lastMessage}}
+          {{lastMessage}}
+        {{else}}
+          Нет сообщений
+        {{/if}}
+      </p>
+    </div>
+    {{#if unreadCount}}
+      <span class="chat-unread">{{unreadCount}}</span>
+    {{/if}}
+  </div>
+</li>
