@@ -11,4 +11,6 @@ app.get('*', (req, res) => {
   res.status(200);
 });
 
-app.listen(PORT, () => console.log(`Сервер запущен на ${PORT} порту`));
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на http://localhost:${PORT}`);
+});

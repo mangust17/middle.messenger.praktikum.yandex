@@ -136,7 +136,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
   }
 }
 export const userData = {
-  avatar: 'src/avatar3.jpg',
+  avatar: '/avatars/avatar3.jpg',
   login: 'user123',
   email: 'user@example.com',
   firstName: 'Иван',

@@ -45,7 +45,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
           ],
         },
       ],
-      currentUser: { avatar: '/src/avatar3.jpg', name: 'Гость' },
+      currentUser: { avatar: '/avatars/avatar3.jpg', name: 'Ванек' },
       settingsButton: new Button({
         id: 'settings-btn',
         icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">

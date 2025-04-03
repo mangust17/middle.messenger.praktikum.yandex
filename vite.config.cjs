@@ -11,7 +11,8 @@ export default defineConfig({
   assetsInclude: ['**/*.hbs'],
   build: {
     rollupOptions: {
-      input: 'src/index.ts',
+      input: 'index.html',
+      outDir: 'dist'
     },
   },
 });
