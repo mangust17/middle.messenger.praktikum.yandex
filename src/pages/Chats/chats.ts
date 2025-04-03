@@ -6,7 +6,7 @@ import { ChatList } from '../../components/ChatList';
 import { ChatHeader } from '../../components/ChatHeader';
 import { ChatWindow } from '../../components/ChatWindow';
 import { Chat } from '../../types/type';
-import './chats.css';
+import './chats.pcss';
 
 interface ChatsPageProps {
   selectedChat?: Chat;

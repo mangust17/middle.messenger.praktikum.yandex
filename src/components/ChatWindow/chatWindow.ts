@@ -1,7 +1,7 @@
 import Block from '../../core/block';
 import chatWindowTemplate from './chatWindow.hbs?raw';
 import { Chat } from '../../types/type';
-import './chatWindow.css';
+import './chatWindow.pcss';
 
 interface ChatWindowProps {
   chat?: Chat;

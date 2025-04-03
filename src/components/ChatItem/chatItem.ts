@@ -1,7 +1,7 @@
 import Block from '../../core/block';
 import chatItemTemplate from './chatItem.hbs?raw';
 import { Chat } from '../../types/type';
-import './chatItem.css';
+import './chatItem.pcss';
 
 interface ChatItemProps extends Chat {
   onClick: () => void;

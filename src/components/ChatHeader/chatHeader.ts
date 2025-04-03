@@ -1,6 +1,6 @@
 import Block from '../../core/block';
 import chatHeaderTemplate from './chatHeader.hbs?raw';
-import './chatHeader.css';
+import './chatHeader.pcss';
 
 interface ChatHeaderProps {
   avatar: string;
