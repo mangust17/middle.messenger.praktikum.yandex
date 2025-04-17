@@ -1,58 +1,71 @@
 import Block from '../../core/block';
 import chatListTemplate from './chatList.hbs?raw';
-import { ChatItem } from '../ChatItem';
-import { Chat } from '../../types/type';
-import Handlebars from 'handlebars';
+import { Chat } from '../../utils/types/type';
+import ChatItem from '../ChatItem/chatItem';
+import Button from '../Button/button';
+import './chatList.pcss';
 
 interface ChatListProps {
   chats: Chat[];
-  onChatClick: (chat: Chat) => void;
+  onCreateChat?: (title: string) => void;
+  onAddUser?: (chatId: number) => void;
+  onRemoveUser?: (chatId: number) => void;
+  onChatClick?: (chatId: number) => void;
 }
 
-export default class ChatList extends Block<ChatListProps> {
+interface ChatListState {
+  createChatButton: Button;
+  chatItems: Record<string, ChatItem>;
+}
+
+export default class ChatList extends Block<ChatListProps, ChatListState> {
   constructor(props: ChatListProps) {
-    super({ ...props, chats: props.chats ?? [] });
-    this.initChildren();
-  }
-
-  private handleClick = (chat: Chat) => {
-    console.log(`Клик по чату ${chat.name}`);
-    if (typeof this.props.onChatClick === 'function') {
-      this.props.onChatClick(chat);
-    } else {
-      console.error('onChatClick is not a function:', this.props.onChatClick);
-    }
-  };
-
-  protected initChildren() {
-    this.children = {};
-
-    if (!this.props.chats || !Array.isArray(this.props.chats)) {
-      console.warn('ChatList: props.chats is not an array', this.props.chats);
-      return;
-    }
-
-    this.props.chats.forEach((chat, index) => {
-      console.log(`Создаем ChatItem для чата ${chat.name}`);
-      this.children[`chat_${index}`] = new ChatItem({
-        ...chat,
-        onClick: () => this.handleClick(chat),
-      });
+    super({
+      ...props,
+      createChatButton: new Button({
+        id: 'createChatButton',
+        text: 'Создать чат',
+        onClick: () => {
+          const title = prompt('Введите название чата:');
+          if (title && props.onCreateChat) {
+            props.onCreateChat(title);
+          }
+        },
+      }),
     });
   }
 
-  protected componentDidUpdate(oldProps: ChatListProps, newProps: ChatListProps): boolean {
-    if (Array.isArray(newProps.chats) && oldProps.chats !== newProps.chats) {
-      this.initChildren();
-    }
-    return true;
+  protected init() {
+    const chatItems: Record<string, ChatItem> = {};
+    this.props.chats.forEach((chat, index) => {
+      chatItems[`chat_${index}`] = new ChatItem({
+        ...chat,
+        onClick: () => {
+          if (this.props.onChatClick) {
+            this.props.onChatClick(chat.id);
+          }
+        },
+        onAddUser: () => {
+          if (this.props.onAddUser) {
+            this.props.onAddUser(chat.id);
+          }
+        },
+        onRemoveUser: () => {
+          if (this.props.onRemoveUser) {
+            this.props.onRemoveUser(chat.id);
+          }
+        },
+      });
+    });
+    this.state.chatItems = chatItems;
   }
 
   protected render() {
-    const template = Handlebars.compile(chatListTemplate);
-    const html = template({
-      chatItems: this.props.chats.map((_, index) => `{{{chat_${index}}}}`).join('\n'),
+    return this.compile(chatListTemplate, {
+      ...this.props,
+      chatItems: Object.values(this.state.chatItems)
+        .map((item) => item.getContent()?.outerHTML)
+        .join(''),
     });
-    return this.compile(html, {});
   }
 }

@@ -11,9 +11,9 @@ Handlebars.registerHelper('lookup', (obj, field) => obj[field]);
 // Регистрация маршрутов
 router
   .use('/', Pages.LoginPage as unknown as typeof Block)
-  .use('/register', Pages.RegistrationPage as unknown as typeof Block)
-  .use('/chats', Pages.ChatsPage as unknown as typeof Block)
-  .use('/profile', Pages.ProfilePage as unknown as typeof Block)
+  .use('/sign-up', Pages.RegistrationPage as unknown as typeof Block)
+  .use('/messenger', Pages.ChatsPage as unknown as typeof Block)
+  .use('/settings', Pages.ProfilePage as unknown as typeof Block)
   .use('/500', Pages.Error_500 as unknown as typeof Block)
   .use('*', Pages.Error_404 as unknown as typeof Block)
   .start();

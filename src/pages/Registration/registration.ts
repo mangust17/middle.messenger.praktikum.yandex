@@ -3,8 +3,12 @@ import regTemplate from './registration.hbs?raw';
 import router from '../../core/router';
 import { Button } from '../../components/Button';
 import { VALIDATION_RULES, validateField } from '../../utils/validation';
+import { AuthAPI } from '../../core/api/auth_api';
+import store from '../../core/store';
 
 export default class RegistrationPage extends Block {
+  private authAPI: AuthAPI;
+
   constructor() {
     super({
       events: {
@@ -37,7 +41,10 @@ export default class RegistrationPage extends Block {
         },
       },
     });
+
+    this.authAPI = new AuthAPI();
   }
+
   private showError(input: HTMLInputElement, errorMessage: string): void {
     let errorSpan = input.nextElementSibling as HTMLElement;
 
@@ -90,37 +97,59 @@ export default class RegistrationPage extends Block {
     this.children.button = new Button({
       id: 'sign-up',
       text: 'Зарегистрироваться',
-      onClick: (e: Event) => {
+      onClick: async (e: Event) => {
         e.preventDefault();
+    
         const form = document.getElementById('registration-form') as HTMLFormElement;
         if (!form) {
           console.error('Форма не найдена');
           return;
         }
-
+    
         if (!this.validateForm()) {
           console.error('Форма содержит ошибки');
           return;
         }
-
+    
         const formData = new FormData(form);
-        const registrationData = {
-          email: formData.get('email'),
-          login: formData.get('login'),
-          first_name: formData.get('first_name'),
-          second_name: formData.get('second_name'),
-          phone: formData.get('phone'),
-          password: formData.get('password'),
-          confirm_password: formData.get('confirm_password'),
+        const registrationData: {
+          email: string | null;
+          login: string | null;
+          first_name: string | null;
+          second_name: string | null;
+          phone: string | null;
+          password: string | null;
+          confirm_password?: string | null;
+        } = {
+          email: formData.get('email') as string | null,
+          login: formData.get('login') as string | null,
+          first_name: formData.get('first_name') as string | null,
+          second_name: formData.get('second_name') as string | null,
+          phone: formData.get('phone') as string | null,
+          password: formData.get('password') as string | null,
+          confirm_password: formData.get('confirm_password') as string | null,
         };
-
+    
         if (registrationData.password !== registrationData.confirm_password) {
-          console.error('Пароли не совпадают');
+          alert('Пароли не совпадают');
           return;
         }
-
-        console.log('Данные для регистрации:', registrationData);
-        router.go('/chats');
+    
+        delete registrationData.confirm_password;
+    
+        try {
+          const response = await this.authAPI.signup(registrationData);
+          console.log('Ответ от сервера:', response);
+          
+          const userData = await this.authAPI.getUser();
+          console.log('Данные пользователя:', userData);
+          
+          store.set('user', userData);
+          router.go('/messenger');
+        } catch (e: any) {
+          console.error('Ошибка регистрации:', e);
+          alert(e.reason || 'Ошибка регистрации');
+        }
       },
     });
   }

@@ -1,10 +1,12 @@
 import Block from '../../core/block';
 import chatItemTemplate from './chatItem.hbs?raw';
-import { Chat } from '../../types/type';
+import { Chat } from '../../utils/types/type';
 import './chatItem.pcss';
 
 interface ChatItemProps extends Chat {
   onClick: () => void;
+  onAddUser?: () => void;
+  onRemoveUser?: () => void;
 }
 
 export default class ChatItem extends Block<ChatItemProps> {

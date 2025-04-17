@@ -4,8 +4,12 @@ import loginTemplate from './login.hbs?raw';
 import { Button } from '../../components/Button';
 import { Link } from '../../components/Link';
 import { VALIDATION_RULES, validateField } from '../../utils/validation';
+import { AuthAPI } from '../../core/api/auth_api';
+import store from '../../core/store';
 
 export default class LoginPage extends Block {
+  private authAPI: AuthAPI;
+
   constructor() {
     super({
       events: {
@@ -38,6 +42,8 @@ export default class LoginPage extends Block {
         },
       },
     });
+
+    this.authAPI = new AuthAPI();
   }
 
   private showError(input: HTMLInputElement, errorMessage: string): void {
@@ -87,37 +93,48 @@ export default class LoginPage extends Block {
     this.children.button = new Button({
       id: 'sign-in',
       text: 'Войти',
-      onClick: (e: Event) => {
+      onClick: async (e: Event) => {
         e.preventDefault();
         const form = document.getElementById('login-form') as HTMLFormElement;
         if (!form) {
           console.error('Форма не найдена');
           return;
         }
-
+    
         if (!this.validateForm()) {
           console.error('Форма содержит ошибки');
           return;
         }
-
+    
         const formData = new FormData(form);
         const loginData = {
-          login: formData.get('login'),
-          password: formData.get('password'),
+          login: formData.get('login') as string,
+          password: formData.get('password') as string,
         };
-
-        console.log('Данные для входа:', loginData);
-        router.go('/chats');
+    
+        try {
+          const response = await this.authAPI.signin(loginData);
+          console.log('Ответ от сервера:', response);
+          
+          const userData = await this.authAPI.getUser();
+          console.log('Данные пользователя:', userData);
+          
+          store.set('user', userData);
+          router.go('/messenger');
+        } catch (e: any) {
+          console.error('Ошибка входа:', e);
+          alert(e.reason || 'Ошибка входа');
+        }
       },
     });
 
     this.children.registerLink = new Link({
-      href: '/register',
+      href: '/sign-up',
       id: 'register-link',
       text: 'Нет аккаунта?',
       onClick: (e: Event) => {
         e.preventDefault();
-        router.go('/register');
+        router.go('/sign-up');
       },
     });
   }

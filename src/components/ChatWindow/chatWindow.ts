@@ -1,6 +1,6 @@
 import Block from '../../core/block';
 import chatWindowTemplate from './chatWindow.hbs?raw';
-import { Chat } from '../../types/type';
+import { Chat } from '../../utils/types/type';
 import './chatWindow.pcss';
 
 interface ChatWindowProps {
