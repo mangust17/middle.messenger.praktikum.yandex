@@ -61,11 +61,32 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
   }
 
   protected render() {
+    const chatItems = this.props.chats.map((chat) => {
+      const chatItem = new ChatItem({
+        ...chat,
+        name: chat.title,
+        onClick: () => {
+          if (this.props.onChatClick) {
+            this.props.onChatClick(chat.id);
+          }
+        },
+        onAddUser: () => {
+          if (this.props.onAddUser) {
+            this.props.onAddUser(chat.id);
+          }
+        },
+        onRemoveUser: () => {
+          if (this.props.onRemoveUser) {
+            this.props.onRemoveUser(chat.id);
+          }
+        },
+      });
+      return chatItem.getContent()?.outerHTML;
+    }).join('');
+
     return this.compile(chatListTemplate, {
       ...this.props,
-      chatItems: Object.values(this.state.chatItems)
-        .map((item) => item.getContent()?.outerHTML)
-        .join(''),
+      chatItems,
     });
   }
 }

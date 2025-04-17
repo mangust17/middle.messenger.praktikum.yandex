@@ -13,12 +13,14 @@
     </div>
     {{{chatList}}}
   </div>
-  
+
   <div class="chat-content">
     {{#if selectedChat}}
-      {{{chatHeader}}}
-      <div class="chat-window">
-        {{{chatWindow}}}
+      <div class="chat-window-container">
+        {{{chatHeader}}}
+        <div class="chat-window">
+          {{{chatWindow}}}
+        </div>
       </div>
     {{else}}
       <div class="chat-placeholder">

@@ -6,14 +6,6 @@
     </div>
   </div>
   <ul class="chat-list__items">
-    {{#each chatItems}}
-      <li class="chat-list__item">
-        {{{this}}}
-        <div class="chat-list__item-actions">
-          <button class="chat-list__action-button" onclick="{{onAddUser}}">Добавить пользователя</button>
-          <button class="chat-list__action-button" onclick="{{onRemoveUser}}">Удалить пользователя</button>
-        </div>
-      </li>
-    {{/each}}
+    {{{chatItems}}}
   </ul>
 </div>

@@ -43,9 +43,10 @@ export default class ChatsPage extends Block<ChatsPageProps> {
 
   private async loadChats() {
     try {
-      const chats = await this.chatsAPI.getChats();
-      console.log('Чаты загружены:', chats);
-      this.setProps({ chats });
+      const chats = await this.chatsAPI.getChats() as XMLHttpRequest;
+      const parsedChats = JSON.parse(chats.responseText);
+      console.log('Чаты загружены:', parsedChats);
+      this.setProps({ chats: parsedChats });
     } catch (error: any) {
       console.error('Ошибка загрузки чатов:', error);
       alert(error.reason || 'Ошибка загрузки чатов');
@@ -59,21 +60,28 @@ export default class ChatsPage extends Block<ChatsPageProps> {
     console.log('Выбран чат:', chat);
 
     try {
-      const token = await this.chatsAPI.getChatToken(chat.id);
-      console.log('Токен чата получен:', token);
+      const token = await this.chatsAPI.getChatToken(chat.id) as XMLHttpRequest;
+      const parsedToken = JSON.parse(token.responseText);
+      console.log('Токен чата получен:', parsedToken);
 
       this.setProps({
-        selectedChat: chat,
+        selectedChat: {
+          ...chat,
+          token: parsedToken.token
+        },
       });
 
       this.children.chatHeader.setProps({
-        avatar: chat.avatar,
-        name: chat.name,
+        avatar: chat.avatar || '',
+        name: chat.title,
         status: 'online',
       });
 
       this.children.chatWindow.setProps({
-        chat: chat,
+        chat: {
+          ...chat,
+          token: parsedToken.token
+        },
         currentUser: this.props.currentUser,
       });
     } catch (error: any) {
@@ -88,7 +96,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
       onChatClick: this.setSelectedChat.bind(this),
       onCreateChat: async (title: string) => {
         try {
-          await this.chatsAPI.createChat(title);
+          const chat = await this.chatsAPI.createChat(title);
           await this.loadChats();
           alert('Чат успешно создан');
         } catch (error: any) {
@@ -149,30 +157,39 @@ export default class ChatsPage extends Block<ChatsPageProps> {
   }
 
   protected componentDidUpdate(oldProps: ChatsPageProps, newProps: ChatsPageProps): boolean {
-    if (oldProps.selectedChat !== newProps.selectedChat) {
+    console.log('componentDidUpdate:', { oldProps, newProps });
+
+    if (oldProps.selectedChat?.id !== newProps.selectedChat?.id) {
+      console.log('selectedChat changed:', newProps.selectedChat);
+
       this.children.chatHeader.setProps({
-        avatar: newProps.selectedChat?.avatar,
-        name: newProps.selectedChat?.name,
-        status: newProps.selectedChat?.status,
+        avatar: newProps.selectedChat?.avatar || '',
+        name: newProps.selectedChat?.title || 'Выберите чат',
+        status: 'online',
       });
 
       this.children.chatWindow.setProps({
         chat: newProps.selectedChat,
         currentUser: this.props.currentUser,
       });
+
+      return true;
     }
 
     if (JSON.stringify(oldProps.chats) !== JSON.stringify(newProps.chats)) {
+      console.log('chats changed:', newProps.chats);
       this.children.chatList.setProps({
         chats: newProps.chats,
         onChatClick: this.setSelectedChat.bind(this),
       });
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   render() {
+    console.log('ChatsPage render with props:', this.props);
     return this.compile(chatsPageTemplate, {
       ...this.props,
       children: this.children,
