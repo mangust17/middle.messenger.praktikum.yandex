@@ -33,9 +33,8 @@ export class AuthAPI extends BaseAPI {
     });
   }
 
-  getUser() {
-    return this.get('/auth/user', {
-      headers: { 'Content-Type': 'application/json' }
-    });
+  async getUser() {
+    const response = await this.get('/auth/user') as XMLHttpRequest;
+    return JSON.parse(response.responseText);
   }
 }

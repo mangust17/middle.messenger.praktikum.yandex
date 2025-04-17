@@ -54,6 +54,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
             login: formData.get('login') as string,
             email: formData.get('email') as string,
             phone: formData.get('phone') as string,
+            avatar: this.props.user.avatar
           };
 
           try {
@@ -83,15 +84,15 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
         phone: string;
         avatar: string | null;
       };
-      
+
       console.log('Данные пользователя загружены:', userData);
-      
+
       // Обновляем пропсы и принудительно перерисовываем компонент
-      this.setProps({ 
+      this.setProps({
         user: userData,
-        showPasswordFields: this.props.showPasswordFields 
+        showPasswordFields: this.props.showPasswordFields
       });
-      
+
       // Принудительно обновляем DOM
       const form = this.element?.querySelector('form');
       if (form) {
@@ -169,6 +170,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
               login: formData.get('login') as string,
               email: formData.get('email') as string,
               phone: formData.get('phone') as string,
+              avatar: this.props.user.avatar
             };
 
             try {
@@ -307,14 +309,4 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
     return this.compile(profileTemplate, templateData);
   }
 }
-export const userData = {
-  avatar: '/avatars/avatar3.jpg',
-  login: 'user123',
-  email: 'user@example.com',
-  firstName: 'Иван',
-  lastName: 'Иванов',
-  chatName: 'IvanChat',
-  phone: '+79991234567',
-  password: 'password',
-  display_name: 'Ванек',
-};
+

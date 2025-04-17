@@ -13,6 +13,7 @@ export class UserAPI extends BaseAPI {
     login: string;
     email: string;
     phone: string;
+    avatar?: string | null;
   }) {
     return this.put('/user/profile', {
       data,
@@ -39,4 +40,4 @@ export class UserAPI extends BaseAPI {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-} 
+}

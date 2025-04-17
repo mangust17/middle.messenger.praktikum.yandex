@@ -55,13 +55,13 @@ export default class ChatsPage extends Block<ChatsPageProps> {
   private async setSelectedChat(chatId: number) {
     const chat = this.props.chats.find(c => c.id === chatId);
     if (!chat) return;
-    
+
     console.log('Выбран чат:', chat);
-    
+
     try {
       const token = await this.chatsAPI.getChatToken(chat.id);
       console.log('Токен чата получен:', token);
-      
+
       this.setProps({
         selectedChat: chat,
       });
