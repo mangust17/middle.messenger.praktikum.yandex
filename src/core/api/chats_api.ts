@@ -18,28 +18,7 @@ export class ChatsAPI extends BaseAPI {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-
-  deleteChat(chatId: number) {
-    return this.delete('/chats', {
-      data: { chatId },
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
-  addUsersToChat(users: number[], chatId: number) {
-    return this.put('/chats/users', {
-      data: { users, chatId },
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
-  removeUsersFromChat(users: number[], chatId: number) {
-    return this.delete('/chats/users', {
-      data: { users, chatId },
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
+  
   getChatUsers(chatId: number) {
     return this.get(`/chats/${chatId}/users`, {
       headers: { 'Content-Type': 'application/json' }

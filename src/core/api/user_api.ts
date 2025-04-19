@@ -33,11 +33,4 @@ export class UserAPI extends BaseAPI {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-
-  searchUser(login: string) {
-    return this.post('/user/search', {
-      data: { login },
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
 }

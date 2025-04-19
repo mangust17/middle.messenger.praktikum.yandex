@@ -93,49 +93,19 @@ export default class ChatsPage extends Block<ChatsPageProps> {
   protected initChildren() {
     this.children.chatList = new ChatList({
       chats: this.props.chats,
-      onChatClick: this.setSelectedChat.bind(this),
+      onChatClick: (chatId: number) => {
+        console.log('Клик на чат с id:', chatId);
+        this.setSelectedChat(chatId);
+      },
+      
       onCreateChat: async (title: string) => {
         try {
-          const chat = await this.chatsAPI.createChat(title);
+          await this.chatsAPI.createChat(title);
           await this.loadChats();
           alert('Чат успешно создан');
         } catch (error: any) {
           console.error('Ошибка создания чата:', error);
           alert(error.reason || 'Ошибка создания чата');
-        }
-      },
-      onAddUser: async (chatId: number) => {
-        const login = prompt('Введите логин пользователя:');
-        if (login) {
-          try {
-            const userId = parseInt(login, 10);
-            if (!isNaN(userId)) {
-              await this.chatsAPI.addUsersToChat([userId], chatId);
-              alert('Пользователь успешно добавлен в чат');
-            } else {
-              alert('Неверный формат ID пользователя');
-            }
-          } catch (error: any) {
-            console.error('Ошибка добавления пользователя:', error);
-            alert(error.reason || 'Ошибка добавления пользователя');
-          }
-        }
-      },
-      onRemoveUser: async (chatId: number) => {
-        const login = prompt('Введите логин пользователя:');
-        if (login) {
-          try {
-            const userId = parseInt(login, 10);
-            if (!isNaN(userId)) {
-              await this.chatsAPI.removeUsersFromChat([userId], chatId);
-              alert('Пользователь успешно удален из чата');
-            } else {
-              alert('Неверный формат ID пользователя');
-            }
-          } catch (error: any) {
-            console.error('Ошибка удаления пользователя:', error);
-            alert(error.reason || 'Ошибка удаления пользователя');
-          }
         }
       },
     });
