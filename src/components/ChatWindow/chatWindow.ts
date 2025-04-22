@@ -1,6 +1,7 @@
 import Block from '../../core/block';
 import chatWindowTemplate from './chatWindow.hbs?raw';
 import { Chat } from '../../utils/types/type';
+import ChatSidebar from '../ChatSidebar/chatSidebar';
 import './chatWindow.pcss';
 
 interface ChatWindowProps {
@@ -9,17 +10,37 @@ interface ChatWindowProps {
     avatar: string;
     name: string;
   };
+  onAddUser?: () => void;
+  onRemoveUser?: () => void;
+  onChangeAvatar?: () => void;
 }
 
 export default class ChatWindow extends Block<ChatWindowProps> {
   constructor(props: ChatWindowProps) {
-    console.log('ChatWindow constructor with props:', props);
-    super(props);
+    super({
+      ...props,
+      chatSidebar: new ChatSidebar({
+        chat: props.chat,
+        onAddUser: props.onAddUser,
+        onRemoveUser: props.onRemoveUser,
+        onChangeAvatar: props.onChangeAvatar,
+      }),
+    });
+  }
+
+  protected componentDidUpdate(oldProps: ChatWindowProps, newProps: ChatWindowProps): boolean {
+    if (this.children.chatSidebar) {
+      this.children.chatSidebar.setProps({
+        chat: newProps.chat,
+      });
+    }
+    return true;
   }
 
   protected render() {
-    console.log('ChatWindow render with props:', this.props);
-    return this.compile(chatWindowTemplate, this.props);
+    return this.compile(chatWindowTemplate, {
+      ...this.props,
+    });
   }
 
   protected addEvents(): void {
@@ -35,18 +56,5 @@ export default class ChatWindow extends Block<ChatWindowProps> {
         input.value = '';
       }
     });
-  }
-
-  componentDidMount() {
-    console.log('ChatWindow mounted with props:', this.props);
-    this.addEvents();
-  }
-
-  protected componentDidUpdate(oldProps: ChatWindowProps, newProps: ChatWindowProps): boolean {
-    console.log('ChatWindow update:', { oldProps, newProps });
-    if (oldProps.chat !== newProps.chat) {
-      console.log('ChatWindow chat changed:', newProps.chat);
-    }
-    return true;
   }
 }

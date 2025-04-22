@@ -1,0 +1,15 @@
+<div class="chat-sidebar">
+  {{#if chat}}
+    <div class="chat-sidebar__header">
+      <img src="{{chat.avatar}}" alt="Аватар чата" class="chat-avatar" />
+      <h3 class="chat-title">{{chat.title}}</h3>
+    </div>
+    <div class="chat-sidebar__actions">
+      <button id="add-user">Добавить пользователя</button>
+      <button id="remove-user">Удалить пользователя</button>
+      <button id="change-avatar">Изменить аватар</button>
+    </div>
+  {{else}}
+    <p>Чат не выбран</p>
+  {{/if}}
+</div>

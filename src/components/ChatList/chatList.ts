@@ -61,7 +61,10 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
   }
 
   protected render() {
-    const chatItems = this.props.chats.map((chat) => {
+    const chatItems: string[] = [];
+    const chatItemBlocks: Record<string, ChatItem> = {};
+  
+    this.props.chats.forEach((chat, index) => {
       const chatItem = new ChatItem({
         ...chat,
         name: chat.title,
@@ -81,12 +84,17 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
           }
         },
       });
-      return chatItem.getContent()?.outerHTML;
-    }).join('');
-
+  
+      const key = `chat_${index}`;
+      chatItemBlocks[key] = chatItem;
+      this.children[key] = chatItem; // <--- Это важно
+      chatItems.push(`<div data-id="id-${chatItem._id}"></div>`);
+    });
+  
     return this.compile(chatListTemplate, {
       ...this.props,
-      chatItems,
+      chatItems: chatItems.join(''),
     });
   }
+  
 }
