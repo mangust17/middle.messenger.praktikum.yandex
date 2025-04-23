@@ -4,10 +4,29 @@
       <img src="{{chat.avatar}}" alt="Аватар чата" class="chat-avatar" />
       <h3 class="chat-title">{{chat.title}}</h3>
     </div>
+
+    <div class="chat-sidebar__users">
+      <h4>Участники чата:</h4>
+      {{#if users.length}}
+        <ul class="user-list">
+          {{#each users}}
+            <li class="user-item">
+              {{#if this.avatar}}
+                <img src="https://ya-praktikum.tech/api/v2/resources{{this.avatar}}" alt="{{this.login}}" class="user-avatar" />
+              {{/if}}
+              <span>{{this.id}} — {{this.login}}</span>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>Пользователи не найдены</p>
+      {{/if}}
+    </div>
+
     <div class="chat-sidebar__actions">
-      <button id="add-user">Добавить пользователя</button>
-      <button id="remove-user">Удалить пользователя</button>
-      <button id="change-avatar">Изменить аватар</button>
+      {{{ addUserButton }}}
+      {{{ removeUserButton }}}
+      {{{ changeAvatarButton }}}
     </div>
   {{else}}
     <p>Чат не выбран</p>

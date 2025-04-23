@@ -1,5 +1,6 @@
 <div class="chat-window">
-  <div class="messages-container">
+  <div class="chat-main">
+    <div class="messages-container">
     {{#if chat}}
       {{#each chat.messages}}
         <div class="message-wrapper {{#if isMine}}justify-end{{else}}justify-start{{/if}}">

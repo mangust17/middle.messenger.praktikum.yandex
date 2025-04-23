@@ -64,7 +64,8 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
     const chatItems: string[] = [];
     const chatItemBlocks: Record<string, ChatItem> = {};
   
-    this.props.chats.forEach((chat, index) => {
+    const chats = this.props.chats ?? [];
+    chats.forEach((chat, index) => {
       const chatItem = new ChatItem({
         ...chat,
         name: chat.title,
