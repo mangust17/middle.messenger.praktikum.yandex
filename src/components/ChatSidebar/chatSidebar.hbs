@@ -8,18 +8,25 @@
     <div class="chat-sidebar__users">
       <h4>Участники чата:</h4>
       {{#if users.length}}
-        <ul class="user-list">
+        <ul class="users-list">
           {{#each users}}
             <li class="user-item">
-              {{#if this.avatar}}
-                <img src="https://ya-praktikum.tech/api/v2/resources{{this.avatar}}" alt="{{this.login}}" class="user-avatar" />
-              {{/if}}
-              <span>{{this.id}} — {{this.login}}</span>
+              <div class="user-avatar">
+                {{#if avatar}}
+                  <img src="{{avatar}}" alt="{{display_name}}">
+                {{else}}
+                  <div class="avatar-placeholder">{{first_name.[0]}}{{second_name.[0]}}</div>
+                {{/if}}
+              </div>
+              <div class="user-info">
+                <span class="user-name">{{display_name}}</span>
+                <span class="user-login">@{{login}}</span>
+              </div>
             </li>
           {{/each}}
         </ul>
       {{else}}
-        <p>Пользователи не найдены</p>
+        <p>Нет участников</p>
       {{/if}}
     </div>
 

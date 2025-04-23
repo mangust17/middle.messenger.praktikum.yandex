@@ -12,11 +12,47 @@ interface ChatSidebarProps {
   onChangeAvatar?: () => void;
 }
 
+interface User {
+  id: number;
+  first_name: string;
+  second_name: string;
+  login: string;
+  display_name: string | null;
+  avatar: string | null;
+}
+
 const api = new ChatsAPI();
 
 export default class ChatSidebar extends Block<ChatSidebarProps> {
+  private users: User[] = [];
+
   constructor(props: ChatSidebarProps) {
     super(props);
+  }
+
+  protected async componentDidMount() {
+    if (this.props.chat?.id) {
+      await this.loadUsers();
+    }
+    return true;
+  }
+
+  protected componentDidUpdate(oldProps: ChatSidebarProps, newProps: ChatSidebarProps) {
+    if (oldProps.chat?.id !== newProps.chat?.id && newProps.chat?.id) {
+      this.loadUsers();
+    }
+    return true;
+  }
+
+  private async loadUsers() {
+    if (!this.props.chat?.id) return;
+    try {
+      const response = await api.getChatUsers(this.props.chat.id);
+      this.users = response as User[];
+      this.setProps({ ...this.props, users: this.users });
+    } catch (err) {
+      console.error('Ошибка загрузки пользователей:', err);
+    }
   }
 
   protected initChildren() {
@@ -31,6 +67,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
           if (!userId) return;
           await api.addUserToChat(userId, this.props.chat.id);
           alert('Пользователь добавлен');
+          await this.loadUsers();
           this.props.onAddUser?.();
         } catch (err) {
           alert('Ошибка добавления пользователя');
@@ -49,6 +86,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
           if (!userId) return;
           await api.removeUserFromChat(userId, this.props.chat.id);
           alert('Пользователь удалён');
+          await this.loadUsers();
           this.props.onRemoveUser?.();
         } catch (err) {
           alert('Ошибка удаления пользователя');
@@ -73,6 +111,6 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
   }
 
   protected render() {
-    return this.compile(chatSidebarTemplate, this.props);
+    return this.compile(chatSidebarTemplate, { ...this.props, users: this.users });
   }
 }
