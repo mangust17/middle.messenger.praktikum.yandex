@@ -83,9 +83,21 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
         e.preventDefault();
         if (!this.props.chat?.id) return alert('Чат не выбран');
         try {
-          const userId = Number(prompt('Введите ID пользователя для добавления'));
-          if (!userId) return;
-          await api.addUserToChat(userId, this.props.chat.id);
+          const userLogin = prompt('Введите логин пользователя для добавления (например: @serp)');
+          if (!userLogin) return;
+
+          const login = userLogin.startsWith('@') ? userLogin.slice(1) : userLogin;
+
+          const allUsersResponse = await api.searchUsers(login) as XMLHttpRequest;
+          const allUsers = JSON.parse(allUsersResponse.responseText);
+
+          const userToAdd = allUsers.find((user: User) => user.login === login);
+          if (!userToAdd) {
+            alert('Пользователь с таким логином не найден');
+            return;
+          }
+
+          await api.addUserToChat(userToAdd.id, this.props.chat.id);
           alert('Пользователь добавлен');
           await this.loadUsers();
           this.props.onAddUser?.();
@@ -102,9 +114,18 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
         e.preventDefault();
         if (!this.props.chat?.id) return alert('Чат не выбран');
         try {
-          const userId = Number(prompt('Введите ID пользователя для удаления'));
-          if (!userId) return;
-          await api.removeUserFromChat(userId, this.props.chat.id);
+          const userLogin = prompt('Введите логин пользователя для удаления (например: @serp)');
+          if (!userLogin) return;
+
+          const login = userLogin.startsWith('@') ? userLogin.slice(1) : userLogin;
+
+          const userToRemove = this.users.find(user => user.login === login);
+          if (!userToRemove) {
+            alert('Пользователь с таким логином не найден');
+            return;
+          }
+
+          await api.removeUserFromChat(userToRemove.id, this.props.chat.id);
           alert('Пользователь удалён');
           await this.loadUsers();
           this.props.onRemoveUser?.();

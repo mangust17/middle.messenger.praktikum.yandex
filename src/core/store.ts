@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 type Indexed = Record<string, any>;
 
 function set(object: Indexed, path: string, value: unknown): Indexed {
@@ -35,7 +37,7 @@ class Store {
   }
 
   public getState(): Indexed {
-    return this.state;
+    return cloneDeep(this.state);
   }
 
   public set(path: string, value: unknown): void {

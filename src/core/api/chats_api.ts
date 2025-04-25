@@ -18,7 +18,7 @@ export class ChatsAPI extends BaseAPI {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-  
+
   getChatUsers(chatId: number) {
     return this.get(`/chats/${chatId}/users`, {
       headers: { 'Content-Type': 'application/json' }
@@ -45,4 +45,10 @@ export class ChatsAPI extends BaseAPI {
   });
 }
 
-} 
+  searchUsers(login: string) {
+    return this.post('/user/search', {
+      data: { login },
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
