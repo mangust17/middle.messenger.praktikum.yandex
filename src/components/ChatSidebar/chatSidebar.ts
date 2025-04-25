@@ -10,6 +10,7 @@ interface ChatSidebarProps {
   onAddUser?: () => void;
   onRemoveUser?: () => void;
   onChangeAvatar?: () => void;
+  users?: User[];
 }
 
 interface User {
@@ -27,7 +28,10 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
   private users: User[] = [];
 
   constructor(props: ChatSidebarProps) {
-    super(props);
+    super({
+      ...props,
+      users: []
+    });
   }
 
   protected async componentDidMount() {
@@ -37,19 +41,35 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
     return true;
   }
 
-  protected componentDidUpdate(oldProps: ChatSidebarProps, newProps: ChatSidebarProps) {
+  protected componentDidUpdate(oldProps: ChatSidebarProps, newProps: ChatSidebarProps): boolean {
+    console.log('componentDidUpdate:', { oldProps, newProps });
+
     if (oldProps.chat?.id !== newProps.chat?.id && newProps.chat?.id) {
       this.loadUsers();
+      return true;
     }
-    return true;
+
+    if (JSON.stringify(oldProps.users) !== JSON.stringify(newProps.users)) {
+      console.log('Users changed:', newProps.users);
+      return true;
+    }
+
+    return false;
   }
 
   private async loadUsers() {
     if (!this.props.chat?.id) return;
     try {
-      const response = await api.getChatUsers(this.props.chat.id);
-      this.users = response as User[];
-      this.setProps({ ...this.props, users: this.users });
+      const response = await api.getChatUsers(this.props.chat.id) as XMLHttpRequest;
+      const users = JSON.parse(response.responseText);
+      console.log('Получены пользователи чата:', users);
+      this.users = users;
+      console.log('Установлены пользователи в this.users:', this.users);
+      this.setProps({
+        ...this.props,
+        users: this.users
+      });
+      console.log('Пропсы обновлены:', this.props);
     } catch (err) {
       console.error('Ошибка загрузки пользователей:', err);
     }
@@ -111,6 +131,11 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
   }
 
   protected render() {
-    return this.compile(chatSidebarTemplate, { ...this.props, users: this.users });
+    console.log('Рендер ChatSidebar с пропсами:', this.props);
+    console.log('Текущие пользователи:', this.users);
+    return this.compile(chatSidebarTemplate, {
+      ...this.props,
+      users: this.users || []
+    });
   }
 }
