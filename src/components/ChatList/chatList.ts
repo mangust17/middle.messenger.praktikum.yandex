@@ -32,41 +32,28 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
           }
         },
       }),
+      chatItems: {},
     });
   }
 
-  protected init() {
+  protected componentDidUpdate(oldProps: ChatListProps, newProps: ChatListProps): boolean {
+    if (JSON.stringify(oldProps.chats) !== JSON.stringify(newProps.chats)) {
+      this.initChatItems();
+      return true;
+    }
+    return false;
+  }
+
+  private initChatItems() {
     const chatItems: Record<string, ChatItem> = {};
+
+    if (!this.props.chats) {
+      console.warn('chats is undefined');
+      return;
+    }
+
     this.props.chats.forEach((chat, index) => {
       chatItems[`chat_${index}`] = new ChatItem({
-        ...chat,
-        onClick: () => {
-          if (this.props.onChatClick) {
-            this.props.onChatClick(chat.id);
-          }
-        },
-        onAddUser: () => {
-          if (this.props.onAddUser) {
-            this.props.onAddUser(chat.id);
-          }
-        },
-        onRemoveUser: () => {
-          if (this.props.onRemoveUser) {
-            this.props.onRemoveUser(chat.id);
-          }
-        },
-      });
-    });
-    this.state.chatItems = chatItems;
-  }
-
-  protected render() {
-    const chatItems: string[] = [];
-    const chatItemBlocks: Record<string, ChatItem> = {};
-  
-    const chats = this.props.chats ?? [];
-    chats.forEach((chat, index) => {
-      const chatItem = new ChatItem({
         ...chat,
         name: chat.title,
         onClick: () => {
@@ -85,17 +72,22 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
           }
         },
       });
-  
-      const key = `chat_${index}`;
-      chatItemBlocks[key] = chatItem;
-      this.children[key] = chatItem; // <--- Это важно
-      chatItems.push(`<div data-id="id-${chatItem._id}"></div>`);
     });
-  
+    this.state.chatItems = chatItems;
+    this.children = { ...this.children, ...chatItems };
+  }
+
+  protected init() {
+    this.initChatItems();
+  }
+
+  protected render() {
     return this.compile(chatListTemplate, {
       ...this.props,
-      chatItems: chatItems.join(''),
+      chatItems: Object.values(this.state.chatItems).map(item => {
+        this.children[item._id] = item;
+        return `<div data-id="id-${item._id}"></div>`;
+      }).join(''),
     });
   }
-  
 }

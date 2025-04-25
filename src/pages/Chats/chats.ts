@@ -54,39 +54,60 @@ export default class ChatsPage extends Block<ChatsPageProps> {
   }
 
   private async setSelectedChat(chatId: number) {
-    const chat = this.props.chats.find(c => c.id === chatId);
-    if (!chat) return;
-
-    console.log('Выбран чат:', chat);
-
     try {
-      const token = await this.chatsAPI.getChatToken(chat.id) as XMLHttpRequest;
-      const parsedToken = JSON.parse(token.responseText);
-      console.log('Токен чата получен:', parsedToken);
+      const chat = this.props.chats.find(c => c.id === chatId);
+      if (!chat) {
+        throw new Error('Чат не найден');
+      }
+
+      console.log('Выбран чат:', chat);
+
+      const tokenResponse = await this.chatsAPI.getChatToken(chat.id) as XMLHttpRequest;
+      const { token } = JSON.parse(tokenResponse.responseText);
+      console.log('Токен чата получен:', token);
+
+      if (!token) {
+        throw new Error('Токен не получен');
+      }
+
+      const updatedChat = {
+        ...chat,
+        token
+      };
+
+      console.log('Обновленный чат с токеном:', updatedChat);
 
       this.setProps({
-        selectedChat: {
-          ...chat,
-          token: parsedToken.token
-        },
+        selectedChat: updatedChat
       });
 
-      this.children.chatHeader.setProps({
-        avatar: chat.avatar || '',
-        name: chat.title,
-        status: 'online',
-      });
+      if (this.children.chatHeader) {
+        this.children.chatHeader.setProps({
+          avatar: chat.avatar || '',
+          name: chat.title,
+          status: 'online',
+        });
+      }
 
-      this.children.chatWindow.setProps({
-        chat: {
-          ...chat,
-          token: parsedToken.token
-        },
-        currentUser: this.props.currentUser,
-      });
+      if (this.children.chatWindow) {
+        this.children.chatWindow.setProps({
+          chat: updatedChat,
+          currentUser: this.props.currentUser,
+        });
+      }
+
     } catch (error: any) {
       console.error('Ошибка получения токена чата:', error);
-      alert(error.reason || 'Ошибка получения токена чата');
+      if (error.responseText) {
+        try {
+          const parsedError = JSON.parse(error.responseText);
+          alert(parsedError.reason || 'Ошибка получения токена чата');
+        } catch (e) {
+          alert(error.statusText || 'Ошибка получения токена чата');
+        }
+      } else {
+        alert(error.message || 'Ошибка получения токена чата');
+      }
     }
   }
 
@@ -97,7 +118,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
         console.log('Клик на чат с id:', chatId);
         this.setSelectedChat(chatId);
       },
-      
+
       onCreateChat: async (title: string) => {
         try {
           await this.chatsAPI.createChat(title);

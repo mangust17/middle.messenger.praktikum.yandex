@@ -27,7 +27,8 @@ export class ChatsAPI extends BaseAPI {
 
   getChatToken(chatId: number) {
     return this.post(`/chats/token/${chatId}`, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
     });
   }
 
@@ -39,11 +40,11 @@ export class ChatsAPI extends BaseAPI {
   }
 
   removeUserFromChat(userId: number, chatId: number) {
-  return this.delete('/chats/users', {
-    data: { users: [userId], chatId },
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
+    return this.delete('/chats/users', {
+      data: { users: [userId], chatId },
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   searchUsers(login: string) {
     return this.post('/user/search', {
