@@ -3,7 +3,7 @@ import { API_CONST } from '../../utils/api_const';
 export class WebSocketService {
   private socket: WebSocket | null = null;
   private pingInterval: number | null = null;
-  private readonly PING_INTERVAL = 30000; // 30 секунд
+  private readonly PING_INTERVAL = 30000;
 
   constructor(private chatId: number, private token: string, private userId: number) {
     console.log('Создание WebSocketService:', {
@@ -32,7 +32,6 @@ export class WebSocketService {
         wasClean: event.wasClean
       });
       this.stopPing();
-      // Пробуем переподключиться через 5 секунд
       console.log('Попытка переподключения через 5 секунд...');
       setTimeout(() => this.connect(), 5000);
     });
@@ -102,7 +101,7 @@ export class WebSocketService {
       console.log('Установка обработчика сообщений WebSocket');
       this.socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        if (data.type !== 'pong') { // Игнорируем pong сообщения
+        if (data.type !== 'pong') {
           console.log('Получено сообщение от сервера:', data);
           callback(data);
         } else {

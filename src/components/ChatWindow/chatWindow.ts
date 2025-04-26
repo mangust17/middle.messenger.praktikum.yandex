@@ -3,7 +3,7 @@ import chatWindowTemplate from './chatWindow.hbs?raw';
 import { Chat } from '../../utils/types/type';
 import { User } from '../../utils/types/user';
 import ChatSidebar from '../ChatSidebar/chatSidebar';
-import { WebSocketService } from '../../core/api/websocket';
+import { WebSocketService } from '../../core/ws/websocket';
 import store from '../../core/store';
 import { AuthAPI } from '../../core/api/auth_api';
 import './chatWindow.pcss';
@@ -54,7 +54,6 @@ export default class ChatWindow extends Block<ChatWindowProps> {
   private initEventListeners() {
     console.log('Initializing event listeners');
 
-    // Используем setTimeout для гарантии, что DOM полностью загружен
     setTimeout(() => {
       const form = this.getContent()?.querySelector('#message-form');
       const input = this.getContent()?.querySelector('#message-input') as HTMLInputElement;
@@ -67,21 +66,18 @@ export default class ChatWindow extends Block<ChatWindowProps> {
         return;
       }
 
-      // Обработчик для кнопки
       button.addEventListener('click', (event) => {
         console.log('Button clicked');
         event.preventDefault();
         this.handleMessageSend(input);
       });
 
-      // Обработчик для формы
       form.addEventListener('submit', (event) => {
         console.log('Form submitted');
         event.preventDefault();
         this.handleMessageSend(input);
       });
 
-      // Обработчик для Enter
       input.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
           console.log('Enter pressed');
@@ -133,9 +129,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
       });
     }
 
-    // Проверяем, что у нас есть новый чат с токеном
     if (newProps.chat?.id && newProps.chat?.token) {
-      // Если это новый чат, или изменился токен, или WebSocket еще не инициализирован
       if (!this.wsService || oldProps.chat?.id !== newProps.chat.id || oldProps.chat?.token !== newProps.chat.token) {
         console.log('Инициализация WebSocket для чата:', {
           chatId: newProps.chat.id,
@@ -148,7 +142,6 @@ export default class ChatWindow extends Block<ChatWindowProps> {
       console.log('Невозможно инициализировать WebSocket: отсутствует чат или токен');
     }
 
-    // Переинициализируем обработчики событий после обновления
     this.initEventListeners();
 
     return true;
@@ -160,15 +153,11 @@ export default class ChatWindow extends Block<ChatWindowProps> {
       hasToken: !!chat.token,
       currentState: this.wsService ? 'exists' : 'null'
     });
-
-    // Закрываем предыдущее соединение, если оно есть
     if (this.wsService) {
       console.log('Закрытие предыдущего WebSocket соединения');
       this.wsService.close();
       this.wsService = null;
     }
-
-    // Получаем ID пользователя из store или из props
     const userId = store.getState().user?.id || this.props.currentUser?.id;
     console.log('Получение ID пользователя:', {
       fromStore: store.getState().user?.id,
