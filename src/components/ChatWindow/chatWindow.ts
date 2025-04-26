@@ -198,7 +198,8 @@ export default class ChatWindow extends Block<ChatWindowProps> {
         if (Array.isArray(data)) {
           store.set('messages', data.reverse());
         } else if (data.type === 'message') {
-          store.set('messages.', data);
+          const currentMessages = store.getState().messages || [];
+          store.set('messages', [...currentMessages, data]);
         }
 
         const state = store.getState();
@@ -225,25 +226,20 @@ export default class ChatWindow extends Block<ChatWindowProps> {
     const state = store.getState();
     const rawMessages = state.messages;
     const messages = Array.isArray(rawMessages) ? rawMessages : [];
-    const currentUser = state.user;
 
     return this.compile(chatWindowTemplate, {
+      ...this.props,
       chat: {
-        id: this.props.chat?.id,
-        avatar: this.props.chat?.avatar,
+        ...this.props.chat,
         messages: messages.map((msg: any) => ({
           text: msg.content,
           time: msg.time ? new Date(msg.time).toLocaleTimeString() : 'только что',
-          isMine: msg.user_id === currentUser?.id,
+          isMine: msg.user_id === state.user?.id,
         })),
       },
-      currentUser: currentUser,
-      chatSidebar: this.children.chatSidebar,
+      currentUser: state.user,
     });
   }
-
-
-
 
   public componentWillUnmount() {
     if (this.wsService) {
