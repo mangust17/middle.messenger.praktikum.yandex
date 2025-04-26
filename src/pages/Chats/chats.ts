@@ -6,26 +6,26 @@ import { ChatList } from '../../components/ChatList';
 import { ChatHeader } from '../../components/ChatHeader';
 import { ChatWindow } from '../../components/ChatWindow';
 import { Chat } from '../../utils/types/type';
+import { User } from '../../utils/types/user';
 import { ChatsAPI } from '../../core/api/chats_api';
+import { AuthAPI } from '../../core/api/auth_api';
 import store from '../../core/store';
 import './chats.pcss';
 
 interface ChatsPageProps {
   selectedChat?: Chat;
   chats: Chat[];
-  currentUser: {
-    avatar: string;
-    name: string;
-  };
+  currentUser: User;
 }
 
 export default class ChatsPage extends Block<ChatsPageProps> {
   private chatsAPI: ChatsAPI;
+  private authAPI: AuthAPI;
 
   constructor(props?: Partial<ChatsPageProps>) {
     super({
       chats: [],
-      currentUser: store.getState().user || { avatar: '', name: '' },
+      currentUser: {} as User,
       settingsButton: new Button({
         id: 'settings-btn',
         icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
@@ -38,7 +38,21 @@ export default class ChatsPage extends Block<ChatsPageProps> {
     });
 
     this.chatsAPI = new ChatsAPI();
-    this.loadChats();
+    this.authAPI = new AuthAPI();
+    this.checkAuth();
+  }
+
+  private async checkAuth() {
+    try {
+      const userData = await this.authAPI.getUser();
+      console.log('Данные пользователя получены:', userData);
+      store.set('user', userData);
+      this.setProps({ currentUser: userData });
+      this.loadChats();
+    } catch (error) {
+      console.error('Ошибка авторизации:', error);
+      router.go('/');
+    }
   }
 
   private async loadChats() {
@@ -77,6 +91,18 @@ export default class ChatsPage extends Block<ChatsPageProps> {
 
       console.log('Обновленный чат с токеном:', updatedChat);
 
+      if (!updatedChat.token) {
+        throw new Error('Токен не был добавлен в чат');
+      }
+
+      const user = store.getState().user;
+      console.log('Данные пользователя для ChatWindow:', user);
+
+      if (!user) {
+        console.error('Пользователь не найден в store');
+        return;
+      }
+
       this.setProps({
         selectedChat: updatedChat
       });
@@ -90,9 +116,21 @@ export default class ChatsPage extends Block<ChatsPageProps> {
       }
 
       if (this.children.chatWindow) {
+        console.log('Обновление ChatWindow с чатом:', {
+          chatId: updatedChat.id,
+          hasToken: !!updatedChat.token,
+          token: updatedChat.token,
+          user: user
+        });
+
+        if (!updatedChat.token) {
+          console.error('Ошибка: токен не передан в ChatWindow');
+          return;
+        }
+
         this.children.chatWindow.setProps({
           chat: updatedChat,
-          currentUser: this.props.currentUser,
+          currentUser: user,
         });
       }
 

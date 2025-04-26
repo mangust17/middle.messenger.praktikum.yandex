@@ -19,9 +19,19 @@ function set(object: Indexed, path: string, value: unknown): Indexed {
     current = current[key];
   }
 
-  current[pathArray[pathArray.length - 1]] = value;
+  const lastKey = pathArray[pathArray.length - 1];
+
+  // Специальная логика для добавления сообщений
+  if (lastKey === '' && Array.isArray(current[pathArray[pathArray.length - 1]])) {
+    // если путь заканчивается на точку ("messages.") — значит хотим добавить в массив
+    current[pathArray[pathArray.length - 1]].push(value);
+  } else {
+    current[lastKey] = value;
+  }
+
   return result;
 }
+
 
 class Store {
   private static _instance: Store;
