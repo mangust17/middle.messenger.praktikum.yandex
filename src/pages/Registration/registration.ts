@@ -99,56 +99,60 @@ export default class RegistrationPage extends Block {
       text: 'Зарегистрироваться',
       onClick: async (e: Event) => {
         e.preventDefault();
-    
+
         const form = document.getElementById('registration-form') as HTMLFormElement;
         if (!form) {
           console.error('Форма не найдена');
           return;
         }
-    
+
         if (!this.validateForm()) {
           console.error('Форма содержит ошибки');
           return;
         }
-    
+
         const formData = new FormData(form);
         const registrationData: {
-          email: string | null;
-          login: string | null;
-          first_name: string | null;
-          second_name: string | null;
-          phone: string | null;
-          password: string | null;
-          confirm_password?: string | null;
+          email: string;
+          login: string;
+          first_name: string;
+          second_name: string;
+          phone: string;
+          password: string;
+          confirm_password?: string;
         } = {
-          email: formData.get('email') as string | null,
-          login: formData.get('login') as string | null,
-          first_name: formData.get('first_name') as string | null,
-          second_name: formData.get('second_name') as string | null,
-          phone: formData.get('phone') as string | null,
-          password: formData.get('password') as string | null,
-          confirm_password: formData.get('confirm_password') as string | null,
+          email: formData.get('email') as string,
+          login: formData.get('login') as string,
+          first_name: formData.get('first_name') as string,
+          second_name: formData.get('second_name') as string,
+          phone: formData.get('phone') as string,
+          password: formData.get('password') as string,
+          confirm_password: formData.get('confirm_password') as string,
         };
-    
+
         if (registrationData.password !== registrationData.confirm_password) {
           alert('Пароли не совпадают');
           return;
         }
-    
+
         delete registrationData.confirm_password;
-    
+
         try {
           const response = await this.authAPI.signup(registrationData);
           console.log('Ответ от сервера:', response);
-          
+
           const userData = await this.authAPI.getUser();
           console.log('Данные пользователя:', userData);
-          
+
           store.set('user', userData);
           router.go('/messenger');
         } catch (e: any) {
           console.error('Ошибка регистрации:', e);
-          alert(e.reason || 'Ошибка регистрации');
+          if (e.status === 409) {
+            alert('Этот логин уже занят. Пожалуйста, выберите другой логин.');
+          } else {
+            alert(e.reason || 'Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.');
+          }
         }
       },
     });

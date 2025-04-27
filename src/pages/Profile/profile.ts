@@ -7,6 +7,10 @@ import { UserAPI } from '../../core/api/user_api';
 import { AuthAPI } from '../../core/api/auth_api';
 import store from '../../core/store';
 
+if (!router) {
+  console.error('Роутер не инициализирован');
+}
+
 interface ProfilePageProps {
   user: {
     avatar: string;
@@ -87,13 +91,11 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
 
       console.log('Данные пользователя загружены:', userData);
 
-      // Обновляем пропсы и принудительно перерисовываем компонент
       this.setProps({
         user: userData,
         showPasswordFields: this.props.showPasswordFields
       });
 
-      // Принудительно обновляем DOM
       const form = this.element?.querySelector('form');
       if (form) {
         const inputs = form.querySelectorAll('input');
@@ -109,7 +111,11 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
     } catch (error: any) {
       console.error('Ошибка загрузки данных пользователя:', error);
       alert(error.reason || 'Ошибка загрузки данных пользователя');
-      router.go('/');
+      try {
+        router.go('/');
+      } catch (routerError) {
+        console.error('Ошибка при переходе:', routerError);
+      }
     }
   }
 
@@ -147,11 +153,15 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
     this.children.chatButton = new Button({
       id: 'chat_button',
       text: 'Назад',
-      onClick: (e: Event) => {
+      onClick: ((e: Event) => {
         console.log('Кнопка назад нажата');
         e.preventDefault();
-        router.back();
-      },
+        try {
+          router.go('/messenger');
+        } catch (error) {
+          console.error('Ошибка при переходе:', error);
+        }
+      }).bind(this)
     });
 
     this.children.editButton = new Button({
@@ -203,14 +213,12 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
               return;
             }
 
-            // Валидация старого пароля
             const oldPasswordError = validateField(oldPassword.value, 'password');
             if (oldPasswordError) {
               this.showError(oldPassword, oldPasswordError);
               return;
             }
 
-            // Валидация нового пароля
             const newPasswordError = validateField(newPassword.value, 'password');
             if (newPasswordError) {
               this.showError(newPassword, newPasswordError);
@@ -231,7 +239,6 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
               await this.userAPI.updatePassword(passwordData);
               alert('Пароль успешно изменен');
               this.togglePasswordFields();
-              // Очищаем поля после успешного изменения
               oldPassword.value = '';
               newPassword.value = '';
             } catch (error: any) {
@@ -261,7 +268,6 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       },
     });
 
-    // Добавляем обработчик для изменения аватара
     const avatarInput = this.element?.querySelector('input[name="avatar"]') as HTMLInputElement;
     if (avatarInput) {
       avatarInput.addEventListener('change', async (e: Event) => {

@@ -42,9 +42,23 @@ class Router {
       return Router._instance;
     }
     Router._instance = this;
+
     window.onpopstate = (event: PopStateEvent) => {
       this._onRoute((event.currentTarget as Window).location.pathname);
     };
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a');
+
+      if (link && link.href && link.href.startsWith(window.location.origin)) {
+        e.preventDefault();
+        const path = link.getAttribute('href');
+        if (path) {
+          this.go(path);
+        }
+      }
+    });
   }
 
   use(pathname: string, block: typeof Block) {
@@ -58,6 +72,7 @@ class Router {
   }
 
   private _onRoute(pathname: string) {
+    console.log('Обработка пути:', pathname);
     const defaultRoute = this.routes.find(r => r.pathname === '*') || null;
     const route = this.routes.find(r => r.pathname === pathname) || defaultRoute;
 
@@ -65,6 +80,8 @@ class Router {
       console.error('No route found and 404 not registered');
       return;
     }
+
+    console.log('Найден маршрут:', route.pathname);
 
     if (this.currentRoute) {
       this.currentRoute.leave();
@@ -75,6 +92,7 @@ class Router {
   }
 
   go(pathname: string) {
+    console.log('Переход по пути:', pathname);
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
@@ -88,4 +106,11 @@ class Router {
   }
 }
 
-export default new Router();
+const router = new Router();
+
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.router = router;
+}
+
+export default router;
