@@ -1,32 +1,35 @@
 .chat-window {
   display: flex;
+  width: 100%;
   height: 100%;
   background-color: #ffffff;
-  width: 100%;
 }
 
 .chat-content {
   display: flex;
-  flex-direction: column;
   flex: 1;
-  min-width: 0;
+  flex-direction: column;
   width: 100%;
+  min-width: 0;
 }
 
 .chat-main {
+  display: flex;
   flex: 1;
+  flex-direction: column;
   height: 0;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
+/* stylelint-disable selector-pseudo-class-no-unknown */
 
 :global(.chat-sidebar) {
   width: 300px;
   min-width: 300px;
   border-left: 1px solid #eaeaea;
 }
+
+/* stylelint-enable selector-pseudo-class-no-unknown */
 
 .messages-container {
   display: flex;

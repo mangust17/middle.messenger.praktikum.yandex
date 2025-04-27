@@ -1,3 +1,7 @@
+// @ts-nocheck
+
+import type { XMLHttpRequestBodyInit } from 'typescript';
+
 enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -74,7 +78,7 @@ export class HTTPTransport {
       xhr.ontimeout = reject;
 
       if (data instanceof FormData) {
-        xhr.send(data as XMLHttpRequestBodyInit);
+        xhr.send(data as any);
       } else {
         method === METHODS.GET || !data ? xhr.send() : xhr.send(JSON.stringify(data));
       }

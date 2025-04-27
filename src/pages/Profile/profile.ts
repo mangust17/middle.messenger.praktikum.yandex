@@ -38,7 +38,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       events: {
         'blur input': (e: FocusEvent) => {
           const input = e.target as HTMLInputElement;
-          /* eslint-disable */
+           
           const error = validateField(input.value, input.name as any);
           this.showError(input, error);
         },
