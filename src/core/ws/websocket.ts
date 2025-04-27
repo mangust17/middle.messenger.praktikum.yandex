@@ -23,6 +23,7 @@ export class WebSocketService {
     this.socket.addEventListener('open', () => {
       console.log('WebSocket соединение успешно установлено');
       this.startPing();
+      this.getOldMessages(0);
     });
 
     this.socket.addEventListener('close', (event) => {
