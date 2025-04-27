@@ -1,0 +1,42 @@
+<div class="chat-sidebar">
+  {{#if chat}}
+    <div class="chat-sidebar__header">
+      <img src="{{chat.avatar}}" alt="Аватар чата" class="chat-avatar" />
+      <h3 class="chat-title">{{chat.title}}</h3>
+    </div>
+
+    <div class="chat-sidebar__users">
+      <h4>Участники чата:</h4>
+      {{#if users}}
+        <ul class="users-list">
+          {{#each users}}
+            <li class="user-item">
+              <div class="user-avatar">
+                {{#if avatar}}
+                  <img src="{{avatar}}" alt="{{display_name}}">
+                {{else}}
+                  <div class="avatar-placeholder">{{first_name.[0]}}{{second_name.[0]}}</div>
+                {{/if}}
+              </div>
+              <div class="user-info">
+                <span class="user-name">{{display_name}}</span>
+                <span class="user-login">@{{login}}</span>
+                <span class="user-id">ID: {{id}}</span>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>Нет участников</p>
+      {{/if}}
+    </div>
+
+    <div class="chat-sidebar__actions">
+      {{{ addUserButton }}}
+      {{{ removeUserButton }}}
+      {{{ changeAvatarButton }}}
+    </div>
+  {{else}}
+    <p>Чат не выбран</p>
+  {{/if}}
+</div>

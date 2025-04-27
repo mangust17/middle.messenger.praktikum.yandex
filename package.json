@@ -1,24 +1,55 @@
 {
   "name": "messanger",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "start": "tsc --noEmit && vite build && node server.cjs",
     "preview": "vite preview",
-    "start": "vite build && vite preview"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
-    "vite": "^6.1.0",
-    "vite-plugin-handlebars": "^2.0.0"
-  },
-  "dependencies": {
-    "handlebars": "^4.7.8"
+    "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
+    "lint:styles": "stylelint 'src/**/*.{pcss,css,scss}' --fix",
+    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path ./.prettierignore"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/lodash": "^4.17.16",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "globals": "^16.0.0",
+    "postcss": "^8.5.1",
+    "postcss-cli": "^11.0.0",
+    "prettier": "^2.8.8",
+    "rollup": "^4.39.0",
+    "stylelint": "^15.7.0",
+    "stylelint-config-standard": "^33.0.0",
+    "stylelint-order": "^6.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.1.1",
+    "vite-plugin-handlebars": "^2.0.0",
+    "vite-plugin-raw": "^1.0.3"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "express": "^4.21.2",
+    "handlebars": "^4.7.8",
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.4",
+    "postcss-preset-env": "^9.6.0"
   }
 }
