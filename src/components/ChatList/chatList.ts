@@ -84,10 +84,12 @@ export default class ChatList extends Block<ChatListProps, ChatListState> {
   protected render() {
     return this.compile(chatListTemplate, {
       ...this.props,
-      chatItems: Object.values(this.state.chatItems).map(item => {
-        this.children[item._id] = item;
-        return `<div data-id="id-${item._id}"></div>`;
-      }).join(''),
+      chatItems: Object.values(this.state.chatItems)
+        .map(item => {
+          this.children[item._id] = item;
+          return `<div data-id="id-${item._id}"></div>`;
+        })
+        .join(''),
     });
   }
 }

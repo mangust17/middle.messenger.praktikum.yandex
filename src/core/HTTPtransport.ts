@@ -24,38 +24,24 @@ function queryStringify(data: RequestData) {
   if (!data) {
     return '';
   }
-  return Object.entries(data).reduce(
-    (acc, [key, value], index, arr) =>
-      `${acc}${key}=${value}${index < arr.length - 1 ? '&' : ''}`,
-    '?'
-  );
+  return Object.entries(data).reduce((acc, [key, value], index, arr) => `${acc}${key}=${value}${index < arr.length - 1 ? '&' : ''}`, '?');
 }
 
 export class HTTPTransport {
-  public get = (url: string, options = {}) =>
-    this.request(url, { ...options, method: METHODS.GET });
+  public get = (url: string, options = {}) => this.request(url, { ...options, method: METHODS.GET });
 
-  public post = (url: string, options = {}) =>
-    this.request(url, { ...options, method: METHODS.POST });
+  public post = (url: string, options = {}) => this.request(url, { ...options, method: METHODS.POST });
 
-  public put = (url: string, options = {}) =>
-    this.request(url, { ...options, method: METHODS.PUT });
+  public put = (url: string, options = {}) => this.request(url, { ...options, method: METHODS.PUT });
 
   public patch = (url: string, options = {}) => {
     return this.request(url, { ...options, method: METHODS.PATCH });
   };
 
-  public delete = (url: string, options = {}) =>
-    this.request(url, { ...options, method: METHODS.DELETE });
+  public delete = (url: string, options = {}) => this.request(url, { ...options, method: METHODS.DELETE });
 
   private request = (url: string, options: RequestOptions) => {
-    const {
-      method = METHODS.GET,
-      headers = {},
-      data,
-      timeout = 5000,
-      withCredentials = true,
-    } = options;
+    const { method = METHODS.GET, headers = {}, data, timeout = 5000, withCredentials = true } = options;
 
     const query = method === METHODS.GET ? queryStringify(data as RequestData) : '';
 

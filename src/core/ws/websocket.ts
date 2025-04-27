@@ -9,7 +9,7 @@ export class WebSocketService {
     console.log('Создание WebSocketService:', {
       chatId,
       userId,
-      hasToken: !!token
+      hasToken: !!token,
     });
     this.connect();
   }
@@ -26,18 +26,18 @@ export class WebSocketService {
       this.getOldMessages(0);
     });
 
-    this.socket.addEventListener('close', (event) => {
+    this.socket.addEventListener('close', event => {
       console.log('WebSocket соединение закрыто:', {
         code: event.code,
         reason: event.reason,
-        wasClean: event.wasClean
+        wasClean: event.wasClean,
       });
       this.stopPing();
       console.log('Попытка переподключения через 5 секунд...');
       setTimeout(() => this.connect(), 5000);
     });
 
-    this.socket.addEventListener('error', (event) => {
+    this.socket.addEventListener('error', event => {
       console.error('WebSocket ошибка:', event);
     });
   }
@@ -67,15 +67,17 @@ export class WebSocketService {
       console.log('Отправка сообщения:', {
         content,
         type: 'message',
-        socketState: this.socket.readyState
+        socketState: this.socket.readyState,
       });
-      this.socket.send(JSON.stringify({
-        content,
-        type: 'message'
-      }));
+      this.socket.send(
+        JSON.stringify({
+          content,
+          type: 'message',
+        }),
+      );
     } else {
       console.error('Невозможно отправить сообщение, WebSocket не в состоянии OPEN:', {
-        socketState: this.socket?.readyState
+        socketState: this.socket?.readyState,
       });
     }
   }
@@ -84,15 +86,17 @@ export class WebSocketService {
     if (this.socket?.readyState === WebSocket.OPEN) {
       console.log('Запрос старых сообщений:', {
         offset,
-        socketState: this.socket.readyState
+        socketState: this.socket.readyState,
       });
-      this.socket.send(JSON.stringify({
-        content: offset.toString(),
-        type: 'get old'
-      }));
+      this.socket.send(
+        JSON.stringify({
+          content: offset.toString(),
+          type: 'get old',
+        }),
+      );
     } else {
       console.error('Невозможно запросить старые сообщения, WebSocket не в состоянии OPEN:', {
-        socketState: this.socket?.readyState
+        socketState: this.socket?.readyState,
       });
     }
   }
@@ -100,7 +104,7 @@ export class WebSocketService {
   public onMessage(callback: (data: any) => void) {
     if (this.socket) {
       console.log('Установка обработчика сообщений WebSocket');
-      this.socket.addEventListener('message', (event) => {
+      this.socket.addEventListener('message', event => {
         const data = JSON.parse(event.data);
         if (data.type !== 'pong') {
           console.log('Получено сообщение от сервера:', data);

@@ -17,20 +17,20 @@ export class UserAPI extends BaseAPI {
   }) {
     return this.put('/user/profile', {
       data,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   updateAvatar(form: FormData) {
     return this.put('/user/profile/avatar', {
-      data: form
+      data: form,
     });
   }
 
   updatePassword(data: { oldPassword: string; newPassword: string }) {
     return this.put('/user/password', {
       data,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 }

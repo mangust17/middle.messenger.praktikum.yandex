@@ -8,27 +8,27 @@ export class ChatsAPI extends BaseAPI {
 
   getChats() {
     return this.get('/chats', {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   createChat(title: string) {
     return this.post('/chats', {
       data: { title },
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   getChatUsers(chatId: number) {
     return this.get(`/chats/${chatId}/users`, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   getChatToken(chatId: number) {
     return this.post(`/chats/token/${chatId}`, {
       headers: { 'Content-Type': 'application/json' },
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
@@ -49,7 +49,7 @@ export class ChatsAPI extends BaseAPI {
   searchUsers(login: string) {
     return this.post('/user/search', {
       data: { login },
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 }

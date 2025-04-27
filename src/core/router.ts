@@ -47,7 +47,7 @@ class Router {
       this._onRoute((event.currentTarget as Window).location.pathname);
     };
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       const target = e.target as HTMLElement;
       const link = target.closest('a');
 

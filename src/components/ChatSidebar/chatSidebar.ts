@@ -30,7 +30,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
   constructor(props: ChatSidebarProps) {
     super({
       ...props,
-      users: []
+      users: [],
     });
   }
 
@@ -60,14 +60,14 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
   private async loadUsers() {
     if (!this.props.chat?.id) return;
     try {
-      const response = await api.getChatUsers(this.props.chat.id) as XMLHttpRequest;
+      const response = (await api.getChatUsers(this.props.chat.id)) as XMLHttpRequest;
       const users = JSON.parse(response.responseText);
       console.log('Получены пользователи чата:', users);
       this.users = users;
       console.log('Установлены пользователи в this.users:', this.users);
       this.setProps({
         ...this.props,
-        users: this.users
+        users: this.users,
       });
       console.log('Пропсы обновлены:', this.props);
     } catch (err) {
@@ -88,7 +88,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
 
           const login = userLogin.startsWith('@') ? userLogin.slice(1) : userLogin;
 
-          const allUsersResponse = await api.searchUsers(login) as XMLHttpRequest;
+          const allUsersResponse = (await api.searchUsers(login)) as XMLHttpRequest;
           const allUsers = JSON.parse(allUsersResponse.responseText);
 
           const userToAdd = allUsers.find((user: User) => user.login === login);
@@ -104,7 +104,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
         } catch (err) {
           alert('Ошибка добавления пользователя');
         }
-      }
+      },
     });
 
     this.children.removeUserButton = new Button({
@@ -132,7 +132,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
         } catch (err) {
           alert('Ошибка удаления пользователя');
         }
-      }
+      },
     });
 
     this.children.changeAvatarButton = new Button({
@@ -147,7 +147,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
         } catch (err) {
           alert('Ошибка смены аватара');
         }
-      }
+      },
     });
   }
 
@@ -156,7 +156,7 @@ export default class ChatSidebar extends Block<ChatSidebarProps> {
     console.log('Текущие пользователи:', this.users);
     return this.compile(chatSidebarTemplate, {
       ...this.props,
-      users: this.users || []
+      users: this.users || [],
     });
   }
 }

@@ -57,7 +57,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
 
   private async loadChats() {
     try {
-      const chats = await this.chatsAPI.getChats() as XMLHttpRequest;
+      const chats = (await this.chatsAPI.getChats()) as XMLHttpRequest;
       const parsedChats = JSON.parse(chats.responseText);
       console.log('Чаты загружены:', parsedChats);
       this.setProps({ chats: parsedChats });
@@ -76,7 +76,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
 
       console.log('Выбран чат:', chat);
 
-      const tokenResponse = await this.chatsAPI.getChatToken(chat.id) as XMLHttpRequest;
+      const tokenResponse = (await this.chatsAPI.getChatToken(chat.id)) as XMLHttpRequest;
       const { token } = JSON.parse(tokenResponse.responseText);
       console.log('Токен чата получен:', token);
 
@@ -86,7 +86,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
 
       const updatedChat = {
         ...chat,
-        token
+        token,
       };
 
       console.log('Обновленный чат с токеном:', updatedChat);
@@ -104,7 +104,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
       }
 
       this.setProps({
-        selectedChat: updatedChat
+        selectedChat: updatedChat,
       });
 
       if (this.children.chatHeader) {
@@ -120,7 +120,7 @@ export default class ChatsPage extends Block<ChatsPageProps> {
           chatId: updatedChat.id,
           hasToken: !!updatedChat.token,
           token: updatedChat.token,
-          user: user
+          user: user,
         });
 
         if (!updatedChat.token) {
@@ -133,7 +133,6 @@ export default class ChatsPage extends Block<ChatsPageProps> {
           currentUser: user,
         });
       }
-
     } catch (error: any) {
       console.error('Ошибка получения токена чата:', error);
       if (error.responseText) {

@@ -100,30 +100,35 @@ export default class LoginPage extends Block {
           console.error('Форма не найдена');
           return;
         }
-    
+
         if (!this.validateForm()) {
           console.error('Форма содержит ошибки');
           return;
         }
-    
+
         const formData = new FormData(form);
         const loginData = {
           login: formData.get('login') as string,
           password: formData.get('password') as string,
         };
-    
+
         try {
           const response = await this.authAPI.signin(loginData);
           console.log('Ответ от сервера:', response);
-          
+
           const userData = await this.authAPI.getUser();
           console.log('Данные пользователя:', userData);
-          
+
           store.set('user', userData);
           router.go('/messenger');
         } catch (e: any) {
           console.error('Ошибка входа:', e);
-          alert(e.reason || 'Ошибка входа');
+          const errorResponse = JSON.parse(e.response);
+          if (errorResponse.reason === 'User already in system') {
+            router.go('/messenger');
+          } else {
+            alert(errorResponse.reason || 'Ошибка входа');
+          }
         }
       },
     });

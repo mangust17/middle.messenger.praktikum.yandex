@@ -30,7 +30,6 @@ function set(object: Indexed, path: string, value: unknown): Indexed {
   return result;
 }
 
-
 class Store {
   private static _instance: Store;
   private state: Indexed = {};

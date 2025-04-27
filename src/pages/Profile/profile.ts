@@ -38,7 +38,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       events: {
         'blur input': (e: FocusEvent) => {
           const input = e.target as HTMLInputElement;
-           
+
           const error = validateField(input.value, input.name as any);
           this.showError(input, error);
         },
@@ -58,7 +58,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
             login: formData.get('login') as string,
             email: formData.get('email') as string,
             phone: formData.get('phone') as string,
-            avatar: this.props.user.avatar
+            avatar: this.props.user.avatar,
           };
 
           try {
@@ -78,7 +78,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
 
   private async loadUserData() {
     try {
-      const userData = await this.authAPI.getUser() as {
+      const userData = (await this.authAPI.getUser()) as {
         id: number;
         first_name: string;
         second_name: string;
@@ -93,7 +93,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
 
       this.setProps({
         user: userData,
-        showPasswordFields: this.props.showPasswordFields
+        showPasswordFields: this.props.showPasswordFields,
       });
 
       const form = this.element?.querySelector('form');
@@ -161,7 +161,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
         } catch (error) {
           console.error('Ошибка при переходе:', error);
         }
-      }).bind(this)
+      }).bind(this),
     });
 
     this.children.editButton = new Button({
@@ -180,7 +180,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
               login: formData.get('login') as string,
               email: formData.get('email') as string,
               phone: formData.get('phone') as string,
-              avatar: this.props.user.avatar
+              avatar: this.props.user.avatar,
             };
 
             try {
@@ -315,4 +315,3 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
     return this.compile(profileTemplate, templateData);
   }
 }
-

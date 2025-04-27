@@ -66,19 +66,19 @@ export default class ChatWindow extends Block<ChatWindowProps> {
         return;
       }
 
-      button.addEventListener('click', (event) => {
+      button.addEventListener('click', event => {
         console.log('Button clicked');
         event.preventDefault();
         this.handleMessageSend(input);
       });
 
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', event => {
         console.log('Form submitted');
         event.preventDefault();
         this.handleMessageSend(input);
       });
 
-      input.addEventListener('keypress', (event) => {
+      input.addEventListener('keypress', event => {
         if (event.key === 'Enter') {
           console.log('Enter pressed');
           event.preventDefault();
@@ -92,10 +92,12 @@ export default class ChatWindow extends Block<ChatWindowProps> {
     console.log('Handling message send:', {
       message: input.value,
       wsService: this.wsService ? 'exists' : 'null',
-      chat: this.props.chat ? {
-        id: this.props.chat.id,
-        hasToken: !!this.props.chat.token
-      } : 'null'
+      chat: this.props.chat
+        ? {
+            id: this.props.chat.id,
+            hasToken: !!this.props.chat.token,
+          }
+        : 'null',
     });
 
     if (input?.value.trim() && this.wsService) {
@@ -106,10 +108,12 @@ export default class ChatWindow extends Block<ChatWindowProps> {
       console.log('WebSocket не инициализирован или сообщение пустое', {
         hasWsService: !!this.wsService,
         hasMessage: !!input?.value.trim(),
-        chat: this.props.chat ? {
-          id: this.props.chat.id,
-          hasToken: !!this.props.chat.token
-        } : 'null'
+        chat: this.props.chat
+          ? {
+              id: this.props.chat.id,
+              hasToken: !!this.props.chat.token,
+            }
+          : 'null',
       });
     }
   }
@@ -120,7 +124,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
       newChatId: newProps.chat?.id,
       oldHasToken: !!oldProps.chat?.token,
       newHasToken: !!newProps.chat?.token,
-      hasWsService: !!this.wsService
+      hasWsService: !!this.wsService,
     });
 
     if (this.children.chatSidebar) {
@@ -134,7 +138,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
         console.log('Инициализация WebSocket для чата:', {
           chatId: newProps.chat.id,
           hasToken: !!newProps.chat.token,
-          currentWsService: !!this.wsService
+          currentWsService: !!this.wsService,
         });
         this.initWebSocket(newProps.chat);
       }
@@ -151,7 +155,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
     console.log('Начало инициализации WebSocket:', {
       chatId: chat.id,
       hasToken: !!chat.token,
-      currentState: this.wsService ? 'exists' : 'null'
+      currentState: this.wsService ? 'exists' : 'null',
     });
     if (this.wsService) {
       console.log('Закрытие предыдущего WebSocket соединения');
@@ -162,7 +166,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
     console.log('Получение ID пользователя:', {
       fromStore: store.getState().user?.id,
       fromProps: this.props.currentUser?.id,
-      finalUserId: userId
+      finalUserId: userId,
     });
 
     if (!userId) {
@@ -178,12 +182,12 @@ export default class ChatWindow extends Block<ChatWindowProps> {
     console.log('Создание нового WebSocket соединения:', {
       chatId: chat.id,
       userId,
-      token: chat.token
+      token: chat.token,
     });
 
     try {
       this.wsService = new WebSocketService(chat.id, chat.token, userId);
-      this.wsService.onMessage((data) => {
+      this.wsService.onMessage(data => {
         if (Array.isArray(data)) {
           store.set('messages', data.reverse());
         } else if (data.type === 'message') {
@@ -203,7 +207,7 @@ export default class ChatWindow extends Block<ChatWindowProps> {
               time: msg.time ? new Date(msg.time).toLocaleTimeString() : 'только что',
               isMine: msg.user_id === state.user?.id,
             })),
-          }
+          },
         });
       });
     } catch (error) {
