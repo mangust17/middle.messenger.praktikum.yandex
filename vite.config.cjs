@@ -14,5 +14,7 @@ export default defineConfig({
       input: 'index.html',
       outDir: 'dist'
     },
+    copyPublicDir: true,
   },
+  publicDir: 'public',
 });
