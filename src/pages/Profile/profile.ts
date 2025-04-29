@@ -110,7 +110,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       store.set('user', userData);
     } catch (error: any) {
       console.error('Ошибка загрузки данных пользователя:', error);
-      alert(error.reason || 'Ошибка загрузки данных пользователя');
+      console.warn('Пользователь не авторизован. Редирект на главную.');
       try {
         router.go('/');
       } catch (routerError) {

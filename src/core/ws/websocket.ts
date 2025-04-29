@@ -102,21 +102,32 @@ export class WebSocketService {
   }
 
   public onMessage(callback: (data: any) => void) {
-    if (this.socket) {
-      console.log('Установка обработчика сообщений WebSocket');
-      this.socket.addEventListener('message', event => {
-        const data = JSON.parse(event.data);
-        if (data.type !== 'pong') {
-          console.log('Получено сообщение от сервера:', data);
-          callback(data);
-        } else {
-          console.log('Получен pong от сервера');
-        }
-      });
-    } else {
+    if (!this.socket) {
       console.error('Невозможно установить обработчик сообщений, WebSocket не инициализирован');
+      return;
     }
+
+    console.log('Установка обработчика сообщений WebSocket');
+
+    this.socket.addEventListener('message', event => {
+      let data;
+
+      try {
+        data = JSON.parse(event.data);
+      } catch (err) {
+        console.error('Ошибка парсинга JSON из сообщения:', event.data, err);
+        return;
+      }
+
+      if (data.type !== 'pong') {
+        console.log('Получено сообщение от сервера:', data);
+        callback(data);
+      } else {
+        console.log('Получен pong от сервера');
+      }
+    });
   }
+
 
   public close() {
     console.log('Закрытие WebSocket соединения');

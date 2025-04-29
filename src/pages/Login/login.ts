@@ -123,7 +123,13 @@ export default class LoginPage extends Block {
           router.go('/messenger');
         } catch (e: any) {
           console.error('Ошибка входа:', e);
-          const errorResponse = JSON.parse(e.response);
+          let errorResponse;
+          try {
+            errorResponse = JSON.parse(e.response);
+          } catch (parseError) {
+            errorResponse = { message: "Невалидный Json", original: e.response };
+          }
+
           if (errorResponse.reason === 'User already in system') {
             router.go('/messenger');
           } else {

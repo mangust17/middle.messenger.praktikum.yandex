@@ -28,6 +28,12 @@ export class AuthAPI extends BaseAPI {
 
   async getUser() {
     const response = (await this.get('/auth/user')) as XMLHttpRequest;
-    return JSON.parse(response.responseText);
+
+    try {
+      return JSON.parse(response.responseText);
+    } catch (err) {
+      console.error('Ошибка парсинга JSON в getUser:', err, response.responseText);
+      return null;
+    }
   }
 }
