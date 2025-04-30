@@ -1,9 +1,31 @@
-.profile-avatar {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 15px;
-  border: 2px solid var(--primary);
+.profile-avatar-container {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 20px;
   border-radius: 50%;
+  overflow: hidden;
+  background-color: #efefef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 500;
+  color: #999;
+  background-color: #efefef;
 }
 
 .profile-container {

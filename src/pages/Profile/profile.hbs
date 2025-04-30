@@ -5,7 +5,15 @@
 
   <div class="profile-content">
     <form class="profile-form">
-      <img src="{{avatar}}" alt="Avatar" class="profile-avatar">
+      <div class="profile-avatar-container">
+        {{#if avatar}}
+          <img src="{{avatar}}" alt="Avatar" class="profile-avatar">
+        {{else}}
+          <div class="profile-avatar-placeholder">
+            {{first_name.[0]}}{{second_name.[0]}}
+          </div>
+        {{/if}}
+      </div>
       <input type="file" id="avatar" name="avatar" accept="image/*">
 
       <h2>{{display_name}}</h2>
