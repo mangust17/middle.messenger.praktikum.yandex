@@ -96,16 +96,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
         showPasswordFields: this.props.showPasswordFields,
       });
 
-      const form = this.element?.querySelector('form');
-      if (form) {
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach(input => {
-          const name = input.name;
-          if (name && userData[name as keyof typeof userData]) {
-            input.value = userData[name as keyof typeof userData] as string;
-          }
-        });
-      }
+      
 
       store.set('user', userData);
     } catch (error: any) {
