@@ -2,6 +2,7 @@ import Block from '../../core/block';
 import router from '../../core/router';
 import profileTemplate from './profile.hbs?raw';
 import { Button } from '../../components/Button';
+import { AvatarInput } from '../../components/AvatarInput';
 import { validateField } from '../../utils/validation';
 import { UserAPI } from '../../core/api/user_api';
 import { AuthAPI } from '../../core/api/auth_api';
@@ -259,27 +260,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       },
     });
 
-    const avatarInput = this.element?.querySelector('input[name="avatar"]') as HTMLInputElement;
-    if (avatarInput) {
-      avatarInput.addEventListener('change', async (e: Event) => {
-        const target = e.target as HTMLInputElement;
-        const file = target.files?.[0];
-        if (file) {
-          const formData = new FormData();
-          formData.append('avatar', file);
-
-          try {
-            const response = await this.userAPI.updateAvatar(formData);
-            console.log('Аватар обновлен:', response);
-            store.set('user', response);
-            alert('Аватар успешно обновлен');
-          } catch (error: any) {
-            console.error('Ошибка обновления аватара:', error);
-            alert(error.reason || 'Ошибка обновления аватара');
-          }
-        }
-      });
-    }
+    this.children.avatarInput = new AvatarInput();
   }
 
   private togglePasswordFields() {
@@ -301,6 +282,7 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       editButton: this.children.editButton.getContent()?.outerHTML,
       changePasswordButton: this.children.changePasswordButton.getContent()?.outerHTML,
       logoutButton: this.children.logoutButton.getContent()?.outerHTML,
+      avatarInput: this.children.avatarInput.getContent()?.outerHTML,
     };
 
     return this.compile(profileTemplate, templateData);

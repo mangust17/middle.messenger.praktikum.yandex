@@ -24,7 +24,9 @@ export class UserAPI extends BaseAPI {
   updateAvatar(form: FormData) {
     return this.put('/user/profile/avatar', {
       data: form,
+      headers: { 'Content-Type': 'multipart/form-data' }, 
     });
+    
   }
 
   updatePassword(data: { oldPassword: string; newPassword: string }) {
