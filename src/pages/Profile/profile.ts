@@ -91,7 +91,9 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
       };
 
       console.log('Данные пользователя загружены:', userData);
-
+      if (userData.avatar) {
+        userData.avatar = `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`;
+      }
       this.setProps({
         user: userData,
         showPasswordFields: this.props.showPasswordFields,
