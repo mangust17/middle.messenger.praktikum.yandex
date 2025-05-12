@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
-    "typeRoots": ["src/utils/types"]
+    "types": ["node", "mocha", "jsdom"]
   },
   "include": ["src/**/*", "main.ts", "utils/validation.ts"]
 }

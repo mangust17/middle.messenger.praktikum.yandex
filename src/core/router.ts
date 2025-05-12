@@ -1,5 +1,5 @@
-import Block from './block';
-import renderDOM from './renderDom';
+import Block from './block.ts';
+import renderDOM from './renderDom.ts';
 
 class Route {
   public pathname: string;
@@ -68,6 +68,7 @@ class Router {
   }
 
   start() {
+    window.addEventListener('popstate', () => this._onRoute(window.location.pathname));
     this._onRoute(window.location.pathname);
   }
 
@@ -93,6 +94,9 @@ class Router {
 
   go(pathname: string) {
     console.log('Переход по пути:', pathname);
+    if (this.currentRoute) {
+      this.currentRoute.leave();
+    }
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
