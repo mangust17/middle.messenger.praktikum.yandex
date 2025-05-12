@@ -29,6 +29,7 @@ class Route {
     }
     renderDOM('#app', this.block);
   }
+  
 }
 
 class Router {
@@ -94,12 +95,11 @@ class Router {
 
   go(pathname: string) {
     console.log('Переход по пути:', pathname);
-    if (this.currentRoute) {
-      this.currentRoute.leave();
-    }
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
+  
+  
 
   back() {
     this.history.back();
