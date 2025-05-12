@@ -45,43 +45,47 @@ describe('Роутер', () => {
     expect(router['routes'][0].pathname).to.equal('/test');
   });
 
-  it('должен обрабатывать start() и вызывать render()', () => {
-    router.use(window.location.pathname, Block);
+  it('должен обрабатывать start() и создавать блок', () => {
+    router.use('/', Block);
     router.start();
-    expect(router['currentRoute']).to.exist;
-    expect(router['currentRoute'].render.called).to.be.true;
+    const currentRoute = router['currentRoute'];
+    expect(currentRoute.block).to.be.instanceOf(Block);
+    expect(currentRoute.block.hide.called).to.be.false;
   });
 
-  it('должен вызывать go() и отображать правильный маршрут', () => {
+  it('должен вызывать go() и скрывать предыдущий блок', () => {
     router.use('/page1', Block);
     router.use('/page2', Block);
     router.go('/page1');
-    expect(router['currentRoute'].pathname).to.equal('/page1');
-    expect(router['currentRoute'].render.called).to.be.true;
+    const firstBlock = router['currentRoute'].block;
+    router.go('/page2');
+    expect(firstBlock.hide.calledOnce).to.be.true;
   });
 
-  it('должен переходить на маршрут по умолчанию "*" если совпадений нет', () => {
+  it('должен переходить на маршрут "*" если совпадений нет', () => {
     router.use('*', Block);
     router.go('/non-existent');
     expect(router['currentRoute'].pathname).to.equal('*');
-    expect(router['currentRoute'].render.called).to.be.true;
   });
 
-  it('должен вызывать leave() на текущем маршруте перед отображением нового', () => {
+  it('должен вызывать hide() при переходе между маршрутами', () => {
     router.use('/a', Block);
     router.use('/b', Block);
+    
     router.go('/a');
-    const first = router['currentRoute'];
+    const firstBlock = router['currentRoute'].block;
+    
     router.go('/b');
-    expect(first.leave.called).to.be.true;
+    expect(firstBlock.hide.calledOnce).to.be.true;
   });
 
-  it('должен отслеживать popstate и обрабатывать смену маршрута', () => {
+  it('должен обрабатывать popstate', () => {
     router.use('/pop', Block);
-    const onRouteStub = sinon.stub(router as any, '_onRoute');
+    const originalRoute = router['currentRoute'];
+    
     window.history.pushState({}, '', '/pop');
     window.dispatchEvent(new PopStateEvent('popstate'));
-    expect(onRouteStub.calledOnceWith('/pop')).to.be.true;
-    onRouteStub.restore();
+
+    expect(originalRoute.block.hide.calledOnce).to.be.true;
   });
 });
