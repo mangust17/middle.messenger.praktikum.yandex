@@ -99,8 +99,6 @@ export default class ProfilePage extends Block<ProfilePageProps & { showPassword
         showPasswordFields: this.props.showPasswordFields,
       });
 
-      
-
       store.set('user', userData);
     } catch (error: any) {
       console.error('Ошибка загрузки данных пользователя:', error);

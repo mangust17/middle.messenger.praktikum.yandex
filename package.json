@@ -10,7 +10,14 @@
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "lint:styles": "stylelint 'src/**/*.{pcss,css,scss}' --fix",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path ./.prettierignore",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "engines": {
     "node": ">=22"
@@ -52,13 +59,14 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.1.1",
-    "vite-plugin-handlebars": "^2.0.0",
+    "vite-plugin-handlebars": "^1.5.0",
     "vite-plugin-raw": "^1.0.3"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
     "express": "^4.21.2",
     "handlebars": "^4.7.8",
+    "husky": "^9.1.7",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.4",
     "postcss-preset-env": "^9.6.0"

@@ -29,7 +29,6 @@ class Route {
     }
     renderDOM('#app', this.block);
   }
-  
 }
 
 class Router {
@@ -98,8 +97,6 @@ class Router {
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
-  
-  
 
   back() {
     this.history.back();

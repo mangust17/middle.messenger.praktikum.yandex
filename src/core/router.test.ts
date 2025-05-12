@@ -1,7 +1,9 @@
+/* eslint-disable */
 import { expect } from 'chai';
 import sinon from 'sinon';
 import jsdomGlobal from 'jsdom-global';
 import Router from './router.ts';
+
 
 class Block {
   hide = sinon.spy();
@@ -71,10 +73,10 @@ describe('Роутер', () => {
   it('должен вызывать hide() при переходе между маршрутами', () => {
     router.use('/a', Block);
     router.use('/b', Block);
-    
+
     router.go('/a');
     const firstBlock = router['currentRoute'].block;
-    
+
     router.go('/b');
     expect(firstBlock.hide.calledOnce).to.be.true;
   });
@@ -82,7 +84,7 @@ describe('Роутер', () => {
   it('должен обрабатывать popstate', () => {
     router.use('/pop', Block);
     const originalRoute = router['currentRoute'];
-    
+
     window.history.pushState({}, '', '/pop');
     window.dispatchEvent(new PopStateEvent('popstate'));
 
