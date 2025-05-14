@@ -4,7 +4,6 @@ import sinon from 'sinon';
 import jsdomGlobal from 'jsdom-global';
 import Router from './router.ts';
 
-
 class Block {
   hide = sinon.spy();
   getContent = sinon.stub().returns(document.createElement('div'));
