@@ -1,0 +1,65 @@
+<main class="profile-container">
+  <div class="sidebar">
+    <button id="chat_button" class="button" onclick="console.log('Кнопка назад нажата'); window.router.go('/messenger');">Назад</button>
+  </div>
+
+  <div class="profile-content">
+    <form class="profile-form">
+      <div class="profile-avatar-container">
+        {{#if avatar}}
+          <img src="{{avatar}}" alt="Avatar" class="profile-avatar">
+        {{else}}
+          <div class="profile-avatar-placeholder">
+            {{first_name.[0]}}{{second_name.[0]}}
+          </div>
+        {{/if}}
+      </div>
+      {{{ avatarInput }}}
+
+
+      <h2>{{display_name}}</h2>
+
+      <div class="profile-form-inputs">
+        <label for="login">Логин</label>
+        <input type="text" id="login" name="login" value="{{login}}" required>
+        <span class="error-message"></span>
+
+        <label for="email">Электронная почта</label>
+        <input type="email" id="email" name="email" value="{{email}}" required>
+        <span class="error-message"></span>
+
+        <label for="first-name">Имя</label>
+        <input type="text" id="first-name" name="first_name" value="{{first_name}}" required>
+        <span class="error-message"></span>
+
+        <label for="last-name">Фамилия</label>
+        <input type="text" id="last-name" name="second_name" value="{{second_name}}" required>
+        <span class="error-message"></span>
+
+        <label for="display_name">Отображаемое имя</label>
+        <input type="text" id="display_name" value="{{display_name}}" name="display_name" required>
+        <span class="error-message"></span>
+
+        <label for="phone">Телефон</label>
+        <input type="tel" id="phone" value="{{phone}}" name="phone" required>
+        <span class="error-message"></span>
+
+        {{#if showPasswordFields}}
+          <label for="old-password">Старый пароль</label>
+          <input type="password" id="old-password" name="oldPassword" required>
+          <span class="error-message"></span>
+
+          <label for="new-password">Новый пароль</label>
+          <input type="password" id="new-password" name="newPassword" required>
+          <span class="error-message"></span>
+        {{/if}}
+      </div>
+
+      <div class="login-footer">
+        {{{editButton}}}
+        {{{changePasswordButton}}}
+        {{{logoutButton}}}
+      </div>
+    </form>
+  </div>
+</main>
