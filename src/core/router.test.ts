@@ -88,17 +88,16 @@ describe('Роутер', () => {
   });
 
   it('должен обрабатывать popstate', () => {
-  router.use('/', Block); // 👈 fix: ensure fallback or root exists
-  router.use('/pop', Block);
-  router.start();
+    router.use('/', Block); // 👈 fix: ensure fallback or root exists
+    router.use('/pop', Block);
+    router.start();
 
-  router.go('/pop');
-  const originalBlock = router['currentRoute'].block;
+    router.go('/pop');
+    const originalBlock = router['currentRoute'].block;
 
-  window.history.pushState({}, '', '/');
-  window.dispatchEvent(new PopStateEvent('popstate'));
+    window.history.pushState({}, '', '/');
+    window.dispatchEvent(new PopStateEvent('popstate'));
 
-  expect(originalBlock.hide.calledOnce).to.be.true;
-});
-
+    expect(originalBlock.hide.calledOnce).to.be.true;
+  });
 });
