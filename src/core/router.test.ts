@@ -34,6 +34,7 @@ describe('Роутер', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
     router = Router;
+    if (typeof router.reset === 'function') router.reset(); // 🔁 Сброс singleton
   });
 
   after(() => {
@@ -57,14 +58,19 @@ describe('Роутер', () => {
   it('должен вызывать go() и скрывать предыдущий блок', () => {
     router.use('/page1', Block);
     router.use('/page2', Block);
+    router.start();
+
     router.go('/page1');
     const firstBlock = router['currentRoute'].block;
+
     router.go('/page2');
     expect(firstBlock.hide.calledOnce).to.be.true;
   });
 
   it('должен переходить на маршрут "*" если совпадений нет', () => {
     router.use('*', Block);
+    router.start();
+
     router.go('/non-existent');
     expect(router['currentRoute'].pathname).to.equal('*');
   });
@@ -72,6 +78,7 @@ describe('Роутер', () => {
   it('должен вызывать hide() при переходе между маршрутами', () => {
     router.use('/a', Block);
     router.use('/b', Block);
+    router.start();
 
     router.go('/a');
     const firstBlock = router['currentRoute'].block;
@@ -81,12 +88,17 @@ describe('Роутер', () => {
   });
 
   it('должен обрабатывать popstate', () => {
-    router.use('/pop', Block);
-    const originalRoute = router['currentRoute'];
+  router.use('/', Block); // 👈 fix: ensure fallback or root exists
+  router.use('/pop', Block);
+  router.start();
 
-    window.history.pushState({}, '', '/pop');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+  router.go('/pop');
+  const originalBlock = router['currentRoute'].block;
 
-    expect(originalRoute.block.hide.calledOnce).to.be.true;
-  });
+  window.history.pushState({}, '', '/');
+  window.dispatchEvent(new PopStateEvent('popstate'));
+
+  expect(originalBlock.hide.calledOnce).to.be.true;
+});
+
 });

@@ -1,4 +1,4 @@
-import EventBus from './eventBus';
+import EventBus from './eventBus.ts';
 import Handlebars from 'handlebars';
 import { nanoid } from 'nanoid';
 

@@ -105,6 +105,12 @@ class Router {
   forward() {
     this.history.forward();
   }
+  reset() {
+  this.routes = [];
+  this.currentRoute = null;
+  this.history = window.history;
+}
+
 }
 
 const router = new Router();
