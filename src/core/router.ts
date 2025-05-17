@@ -1,5 +1,5 @@
-import Block from './block';
-import renderDOM from './renderDom';
+import Block from './block.ts';
+import renderDOM from './renderDom.ts';
 
 class Route {
   public pathname: string;
@@ -68,6 +68,7 @@ class Router {
   }
 
   start() {
+    window.addEventListener('popstate', () => this._onRoute(window.location.pathname));
     this._onRoute(window.location.pathname);
   }
 
@@ -103,6 +104,11 @@ class Router {
 
   forward() {
     this.history.forward();
+  }
+  reset() {
+    this.routes = [];
+    this.currentRoute = null;
+    this.history = window.history;
   }
 }
 

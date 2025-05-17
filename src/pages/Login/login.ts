@@ -127,7 +127,7 @@ export default class LoginPage extends Block {
           try {
             errorResponse = JSON.parse(e.response);
           } catch (parseError) {
-            errorResponse = { message: "Невалидный Json", original: e.response };
+            errorResponse = { message: 'Невалидный Json', original: e.response };
           }
 
           if (errorResponse.reason === 'User already in system') {

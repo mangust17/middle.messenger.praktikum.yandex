@@ -128,7 +128,6 @@ export class WebSocketService {
     });
   }
 
-
   public close() {
     console.log('Закрытие WebSocket соединения');
     this.stopPing();
