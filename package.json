@@ -14,10 +14,16 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-  "*.{ts,tsx,js,jsx}": ["eslint --fix"],
-  "*.{css,scss,pcss}": ["stylelint --fix"],
-  "*.{md,json}": ["prettier --write"]
-},
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ],
+    "*.{css,scss,pcss}": [
+      "stylelint --fix"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
+  },
   "engines": {
     "node": ">=22"
   },
@@ -50,7 +56,7 @@
     "postcss-cli": "^11.0.0",
     "prettier": "^2.8.8",
     "rollup": "^4.39.0",
-    "sinon": "^20.0.0",
+    "sinon": "^17.0.2",
     "stylelint": "^15.7.0",
     "stylelint-config-standard": "^33.0.0",
     "stylelint-order": "^6.0.3",
