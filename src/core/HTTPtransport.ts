@@ -1,7 +1,4 @@
 // @ts-nocheck
-
-import type { XMLHttpRequestBodyInit } from 'typescript';
-
 enum METHODS {
   GET = 'GET',
   POST = 'POST',

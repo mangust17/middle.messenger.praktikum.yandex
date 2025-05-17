@@ -15,7 +15,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "eslint --fix"
+      "eslint --fix",
+      "git restore --staged src/core/HTTPtransport.test.ts"
     ],
     "*.{css,scss,pcss}": [
       "stylelint --fix"
